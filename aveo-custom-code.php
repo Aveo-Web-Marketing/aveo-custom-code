@@ -32,6 +32,7 @@ function aveo_custom_code_install() {
             name varchar(255) NOT NULL,
             code text NOT NULL,
             type varchar(100) NOT NULL,
+            is_active BOOLEAN NOT NULL DEFAULT TRUE,
             PRIMARY KEY  (id)
         ) {$charset_collate};";
 
