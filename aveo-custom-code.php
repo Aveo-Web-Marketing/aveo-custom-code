@@ -33,6 +33,7 @@ function aveo_custom_code_install() {
             code text NOT NULL,
             type varchar(100) NOT NULL,
             is_active BOOLEAN NOT NULL DEFAULT TRUE,
+            file varchar(255) NOT NULL,
             PRIMARY KEY  (id)
         ) {$charset_collate};";
 
@@ -100,15 +101,39 @@ function aveo_process_snippet_submission() {
             $snippet_code_sanitized = sanitize_textarea_field($snippet_code);
             $snippet_name_sanitized = sanitize_text_field($_POST['aveo_snippet_name']);
 
+            // Define the base directory for the snippets
+            $snippets_dir = plugin_dir_path(__FILE__) . 'aveo-stored-snippets/';
+
+            // Check if the directory exists, and if not, create it
+            if (!file_exists($snippets_dir)) {
+                wp_mkdir_p($snippets_dir); // WordPress function to create a directory if it doesn't exist
+            }
+
+            // Now adjust the file path to include this directory
+            $file = $snippets_dir . $snippet_name_sanitized . '.php';
+    
+            // Check if file already exists to avoid unnecessary operations
+            if (!file_exists($file)) {
+                $handle = fopen($file, 'w') or die('Cannot open file:  '.$file); // implicitly creates file
+
+                // Define the content of your PHP file
+                $content = "<?php\n" . $snippet_code_sanitized;
+                
+                fwrite($handle, $content);
+                fclose($handle);
+            }
+
             // Prepare data for insertion
             $data = array(
                 'name' => $snippet_name_sanitized,
                 'code' => $snippet_code_sanitized,
-                'type' => 'php' // Assuming you're storing PHP snippets. Adjust as necessary.
+                'type' => 'php', // Assuming you're storing PHP snippets. Adjust as necessary.
+                'is_active' => isset($_POST['aveo_snippet_active']) ? 1 : 0, // Check if the snippet should be active or not
+                'file' => $file,
             );
 
             // Define data format for insertion
-            $format = array('%s', '%s', '%s');
+            $format = array('%s', '%s', '%s', '%d', '%s');
 
             // Insert data into the database
             $wpdb->insert(
@@ -135,9 +160,13 @@ function aveo_execute_custom_php_snippets() {
     $php_snippets = $wpdb->get_results("SELECT * FROM {$table_name} WHERE type = 'php'", OBJECT);
 
     foreach ($php_snippets as $snippet) {
-        eval($snippet->code); // Execute the PHP code
+        // Check if the snippet is active
+        if ($snippet->is_active) {
+            // Include the file
+            include $snippet->file;
+        }
     }
 }
-add_action('init', 'aveo_execute_custom_php_snippets');
+add_action('init', 'aveo_execute_custom_php_snippets', 1);
 
 
