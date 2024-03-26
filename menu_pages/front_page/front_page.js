@@ -1,4 +1,7 @@
 // Event listener for the activation / deactivaiton of a snippet
+console.log('Front page JS file  loaded');
+
+
 jQuery(function($) {
     // Correctly attaching the event handler
     $(document).on('click', '.snippet-activate-switch', function() {

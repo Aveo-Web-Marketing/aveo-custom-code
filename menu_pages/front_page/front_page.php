@@ -4,11 +4,11 @@
 include 'extra-functions.php';
 
 // enqueue the scripts
-function aveo_custom_code_enqueue_scripts() {
+function aveo_frontpage_code_enqueue_scripts() {
     // Enqueue the front_page.js file
     wp_enqueue_script('aveo-custom-code-front-page', plugin_dir_url(__FILE__) . 'front_page.js', array('jquery'), '1.0', true);
 }
-add_action('admin_enqueue_scripts', 'aveo_custom_code_enqueue_scripts');
+add_action('admin_enqueue_scripts', 'aveo_frontpage_code_enqueue_scripts');
 
 // Function to display the frontpage of the plugin
 function aveo_custom_code_front_page() {

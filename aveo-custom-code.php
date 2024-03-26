@@ -170,3 +170,25 @@ function aveo_execute_custom_php_snippets() {
 add_action('init', 'aveo_execute_custom_php_snippets', 1);
 
 
+/*
+// function to equeue the codeMirror script
+function aveo_enqueue_codemirror_assets($hook) {
+    // Only enqueue this script on the specific admin page where it's needed
+    if ('create_snippets_page.php' !== $hook) {
+        return;
+    }
+
+    // Enqueue your custom JS file
+    wp_enqueue_script('aveo-codemirror-init', plugin_dir_url(__FILE__) . 'code-editor-init.js', array('wp-code-editor'), '1.0.0', true);
+
+    // Localize script for passing PHP variables to JS
+    $cm_settings = array('codeEditor' => wp_enqueue_code_editor(array('type' => 'text/php')));
+    wp_localize_script('aveo-codemirror-init', 'cm_settings', $cm_settings);
+
+}
+add_action('admin_enqueue_scripts', 'aveo_enqueue_codemirror_assets');
+
+*/
+
+
+

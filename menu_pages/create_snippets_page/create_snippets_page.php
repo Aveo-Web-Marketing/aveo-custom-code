@@ -1,6 +1,14 @@
 <?php
 // Function to display the create snippet page
 function aveo_custom_code_create_snippet_page() {
+
+    function aveo_create_snippets_enqueue_scripts() {
+        // Enqueue the front_page.js file
+        wp_enqueue_script('aveo-custom-code-create-snippets-page', plugin_dir_url(__FILE__) . 'aveo-code-editor-init.js', array('jquery'), '1.0', true);
+    }
+    add_action('admin_enqueue_scripts', 'aveo_create_snippets_enqueue_scripts');
+
+
     // Check user capability
     if (!current_user_can('manage_options')) {
         return;
@@ -19,20 +27,5 @@ function aveo_custom_code_create_snippet_page() {
 }
 
 
-// enqueuing the code editor with CodeMirror
-function aveo_enqueue_code_editor_assets($hook) {
-    // Assuming 'aveo-custom-code-create-snippet' is the menu slug for your plugin's page
-    if ($hook !== 'toplevel_page_aveo-custom-code' && $hook !== 'aveo-custom-code_page_aveo-custom-code-create-snippet') {
-        return;
-    }
-
-    // Correct path assuming your-plugin-main-file.php is in the root of your plugin directory
-    wp_enqueue_script('aveo-code-editor-init', plugin_dir_url(__FILE__) . 'code-editor-init.js', array('wp-code-editor'), null, true);
-
-    // No need to enqueue these here if you're using wp_enqueue_code_editor(), it does it for you
-    // wp_enqueue_script('wp-theme-plugin-editor');
-    // wp_enqueue_style('wp-codemirror');
-}
-add_action('admin_enqueue_scripts', 'aveo_enqueue_code_editor_assets');
 
 
