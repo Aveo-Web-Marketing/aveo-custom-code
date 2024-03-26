@@ -161,7 +161,7 @@ function aveo_execute_custom_php_snippets() {
 
     foreach ($php_snippets as $snippet) {
         // Check if the snippet is active
-        if ($snippet->is_active) {
+        if ($snippet->is_active == 1) {
             // Include the file
             include $snippet->file;
         }
