@@ -91,9 +91,50 @@ function aveo_custom_code_menu() {
         // Enqueue the front_page.js file
         wp_enqueue_script('aveo-custom-code-create-snippets-page', plugin_dir_url(__FILE__) . 'menu_pages/create_snippets_page/create_snippets_page.js', array('jquery'), '1.0', true);
     
-        // Prepare CodeMirror for PHP code editing
-        $settings = wp_enqueue_code_editor(array('type' => 'text/x-php'));
-        // Now, $settings contains the actual settings for the CodeMirror editor.
+        // Prepare CodeMirror for code editing, assuming PHP for this example
+        $language_type = 'text/x-php'; // This could be dynamic
+        $settings = wp_enqueue_code_editor(array('type' => $language_type));
+
+        // Now, adjust settings based on the language type
+        if (is_array($settings) && isset($settings['codemirror'])) {
+            switch ($language_type) {
+                case 'text/x-php':
+                    $settings['codemirror'] = array_merge(
+                        $settings['codemirror'],
+                        array(
+                            'mode' => $language_type,
+                            'autoCloseBrackets' => true,
+                            'autoCloseTags' => true,
+                            'matchBrackets' => true,
+                            'matchTags' => array('bothTags' => true),
+                            'extraKeys'        => array(
+                                'Alt-Space' => 'autocomplete',
+                                'Ctrl-/'     => 'toggleComment',
+                                'Cmd-/'      => 'toggleComment',
+                                'Alt-F'      => 'findPersistent',
+                                'Ctrl-F'     => 'findPersistent',
+                                'Cmd-F'      => 'findPersistent',
+                            ),
+                        )
+                    );
+                    break;
+                // Add cases for other languages as needed
+                case 'text/css':
+                    $settings['codemirror'] = array_merge(
+                        $settings['codemirror'],
+                        array(
+                            'mode' => $language_type,
+                            // Other CSS-specific settings here
+                        )
+                    );
+                    break;
+                // Default case if needed
+                default:
+                    // Default settings or log an error
+                    break;
+            }
+        }
+
         if (false !== $settings) {
             wp_localize_script('aveo-custom-code-create-snippets-page', 'cm_settings', array('codeEditor' => $settings));
         }
