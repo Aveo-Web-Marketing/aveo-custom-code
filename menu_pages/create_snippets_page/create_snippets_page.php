@@ -1,13 +1,7 @@
 <?php
+
 // Function to display the create snippet page
 function aveo_custom_code_create_snippet_page() {
-
-    function aveo_create_snippets_enqueue_scripts() {
-        // Enqueue the front_page.js file
-        wp_enqueue_script('aveo-custom-code-create-snippets-page', plugin_dir_url(__FILE__) . 'aveo-code-editor-init.js', array('jquery'), '1.0', true);
-    }
-    add_action('admin_enqueue_scripts', 'aveo_create_snippets_enqueue_scripts');
-
 
     // Check user capability
     if (!current_user_can('manage_options')) {

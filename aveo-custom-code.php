@@ -73,14 +73,35 @@ function aveo_custom_code_menu() {
     );
 
     // Submenu for creating a snippet
-    add_submenu_page(
-        'aveo-custom-code', // Parent slug
-        'Create new', // Page title
-        'Create new', // Menu title
-        'manage_options', // Capability
-        'aveo-custom-code-create-snippet', // Menu slug
-        'aveo_custom_code_create_snippet_page' // Function to display the menu page
+    $create_snippet_hook_suffix = add_submenu_page(
+        'aveo-custom-code',
+        'Create new',
+        'Create new',
+        'manage_options',
+        'aveo-custom-code-create-snippet',
+        'aveo_custom_code_create_snippet_page'
     );
+
+    // Enqueue script for initializing the CodeMirror editor. This script will only be loaded on the create snippet page. It uses the $create_snippet_hook_suffix variable to check if it should be loaded.
+    add_action('admin_enqueue_scripts', function ($hook) use ($create_snippet_hook_suffix) {
+        if ($hook !== $create_snippet_hook_suffix) {
+            return;
+        }
+    
+        // Enqueue the front_page.js file
+        wp_enqueue_script('aveo-custom-code-create-snippets-page', plugin_dir_url(__FILE__) . 'menu_pages/create_snippets_page/create_snippets_page.js', array('jquery'), '1.0', true);
+    
+        // Prepare CodeMirror for PHP code editing
+        $settings = wp_enqueue_code_editor(array('type' => 'text/x-php'));
+        // Now, $settings contains the actual settings for the CodeMirror editor.
+        if (false !== $settings) {
+            wp_localize_script('aveo-custom-code-create-snippets-page', 'cm_settings', array('codeEditor' => $settings));
+        }
+    
+        // Enqueue CodeMirror scripts and styles
+        wp_enqueue_script('wp-theme-plugin-editor');
+        wp_enqueue_style('wp-codemirror');
+    });
 }
 
 // Include the menu page manager file
@@ -170,25 +191,10 @@ function aveo_execute_custom_php_snippets() {
 add_action('init', 'aveo_execute_custom_php_snippets', 1);
 
 
-/*
-// function to equeue the codeMirror script
-function aveo_enqueue_codemirror_assets($hook) {
-    // Only enqueue this script on the specific admin page where it's needed
-    if ('create_snippets_page.php' !== $hook) {
-        return;
-    }
 
-    // Enqueue your custom JS file
-    wp_enqueue_script('aveo-codemirror-init', plugin_dir_url(__FILE__) . 'code-editor-init.js', array('wp-code-editor'), '1.0.0', true);
 
-    // Localize script for passing PHP variables to JS
-    $cm_settings = array('codeEditor' => wp_enqueue_code_editor(array('type' => 'text/php')));
-    wp_localize_script('aveo-codemirror-init', 'cm_settings', $cm_settings);
 
-}
-add_action('admin_enqueue_scripts', 'aveo_enqueue_codemirror_assets');
 
-*/
 
 
 
