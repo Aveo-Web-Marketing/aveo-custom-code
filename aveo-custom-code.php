@@ -118,7 +118,6 @@ function aveo_custom_code_menu() {
                             'gutters' => array('CodeMirror-lint-markers'),
                             'indentWithTabs' => true,
                             'lineWrapping' => true,
-                            'matchBrackets' => true,
                             'highlightSelectionMatches' => array('showToken' => '/\w/', 'annotateScrollbar' => true)
                         )
                     );
@@ -148,6 +147,16 @@ function aveo_custom_code_menu() {
         wp_enqueue_script('wp-theme-plugin-editor');
         wp_enqueue_style('wp-codemirror');
     });
+
+    // Submenu for importing snippets
+    add_submenu_page(
+        'aveo-custom-code',
+        'Import Snippet',
+        'Import Snippet',
+        'manage_options',
+        'aveo-custom-code-import-snippet',
+        'aveo_custom_code_import_snippet_page'
+    );
 }
 
 // Include the menu page manager file
