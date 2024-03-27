@@ -115,6 +115,11 @@ function aveo_custom_code_menu() {
                                 'Ctrl-F'     => 'findPersistent',
                                 'Cmd-F'      => 'findPersistent',
                             ),
+                            'gutters' => array('CodeMirror-lint-markers'),
+                            'indentWithTabs' => true,
+                            'lineWrapping' => true,
+                            'matchBrackets' => true,
+                            'highlightSelectionMatches' => array('showToken' => '/\w/', 'annotateScrollbar' => true)
                         )
                     );
                     break;
