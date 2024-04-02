@@ -100,7 +100,9 @@ function aveo_custom_code_menu() {
             'aveo-custom-code-edit-snippet',
         );
 
-        if (!in_array($_GET['page'], $pages)) {
+        $currentPage = $_GET['page'] ?? '';
+
+        if (!in_array($currentPage, $pages)) {
             return;
         }
     
