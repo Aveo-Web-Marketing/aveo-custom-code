@@ -1,4 +1,4 @@
 <?php
 function f() {
-	echo 'hej';
+	echo 'hej 2';
 }
