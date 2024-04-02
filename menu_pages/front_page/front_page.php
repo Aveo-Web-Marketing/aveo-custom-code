@@ -36,10 +36,14 @@ function aveo_custom_code_front_page() {
     global $wpdb;
     $table_name = $wpdb->prefix . 'aveo_custom_code';
     $snippets = $wpdb->get_results("SELECT * FROM $table_name");
+    
 
     echo '<tbody>';
 
     foreach ($snippets as $snippet) {
+
+        $snippet_edit_url = admin_url('admin.php?page=aveo-custom-code-edit-snippet&snippet_id=' . $snippet->id);
+
         echo '<tr>';
         echo '<td><input type="checkbox" class="snippet-checkbox" data-snippet_id="' . $snippet->id . '"></td>';
         echo '<td>  <span>
@@ -47,7 +51,7 @@ function aveo_custom_code_front_page() {
                         <input type="checkbox" ' . ($snippet->is_active == 1 ? 'checked' : '') . ' class="snippet-activate-switch" data-snippet_id="' . $snippet->id . '"> 
                     </span> 
                 </td>';
-        echo '<td>' . $snippet->name . '</td>';
+        echo '<td><a href="'. $snippet_edit_url .'"> ' . $snippet->name . '</a></td>';
         echo '<td>' . $snippet->type . '</td>';
         echo '</tr>';
     }

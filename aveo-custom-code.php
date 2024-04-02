@@ -89,7 +89,7 @@ function aveo_custom_code_menu() {
         }
     
         // Enqueue the front_page.js file
-        wp_enqueue_script('aveo-custom-code-create-snippets-page', plugin_dir_url(__FILE__) . 'menu_pages/create_snippets_page/create_snippets_page.js', array('jquery'), '1.0', true);
+        wp_enqueue_script('aveo-custom-code-create-snippets-page', plugin_dir_url(__FILE__) . 'menu_pages/create_snippets_page/code_mirror_innit.js', array('jquery'), '1.0', true);
     
         // Prepare CodeMirror for code editing, assuming PHP for this example
         $language_type = 'text/x-php'; // This could be dynamic
@@ -148,14 +148,24 @@ function aveo_custom_code_menu() {
         wp_enqueue_style('wp-codemirror');
     });
 
+    // Submenu for editing a snippet
+    add_submenu_page(
+        'aveo-custom-code',
+        'Edit Snippet',
+        'Edit Snippet',
+        'manage_options',
+        'aveo-custom-code-edit-snippet',
+        'aveo_custom_code_edit_snippet_page'
+    );
+
     // Submenu for importing snippets
     add_submenu_page(
         'aveo-custom-code',
         'Import Snippet',
         'Import Snippet',
         'manage_options',
-        'aveo-custom-code-import-snippet',
-        'aveo_custom_code_import_snippet_page'
+        'aveo-custom-code-import',
+        'aveo_custom_code_import_page'
     );
 }
 
