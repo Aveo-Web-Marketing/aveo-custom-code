@@ -8,7 +8,10 @@ function aveo_custom_code_create_snippet_page() {
         return;
     }
     
-    
+    if ($message = get_transient('aveo_snippet_error_message')) {
+        echo '<div class="notice notice-error is-dismissible"><p>' . esc_html($message) . '</p></div>';
+        delete_transient('aveo_snippet_error_message');
+    }
 
     $html_output = '
         <div class="aveo-custom-code-wrap">

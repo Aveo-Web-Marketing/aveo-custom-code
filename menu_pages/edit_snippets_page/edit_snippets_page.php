@@ -10,6 +10,11 @@ function aveo_custom_code_edit_snippet_page() {
         return;
     }
     
+    if ($message = get_transient('aveo_snippet_success_message')) {
+        echo '<div class="notice notice-success is-dismissible"><p>' . esc_html($message) . '</p></div>';
+        delete_transient('aveo_snippet_success_message');
+    }
+
     // Get the snippet ID from the URL
     $snippet_id = isset($_GET['snippet_id']) ? intval($_GET['snippet_id']) : 0;
 

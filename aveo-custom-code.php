@@ -181,61 +181,67 @@ function aveo_process_snippet_submission() {
     // Check if our form is submitted, nonce is valid, and the user has appropriate capability
     if (isset($_POST['aveo_submit_snippet'], $_POST['aveo_code_editor'], $_POST['aveo_custom_code_nonce']) && wp_verify_nonce($_POST['aveo_custom_code_nonce'], 'aveo_custom_code_action')) {
         if (current_user_can('manage_options')) {
-            $snippet_code = stripslashes($_POST['aveo_code_editor']);
+            $snippet_id = isset($_POST['snippet_id']) ? intval($_POST['snippet_id']) : 0;
+            $snippet_name = sanitize_text_field($_POST['aveo_snippet_name']);
+            $snippet_code = sanitize_textarea_field(stripslashes($_POST['aveo_code_editor']));
+            $is_active = isset($_POST['aveo_snippet_active']) ? 1 : 0;
 
-            // Sanitize the input
-            $snippet_code_sanitized = sanitize_textarea_field($snippet_code);
-            $snippet_name_sanitized = sanitize_text_field($_POST['aveo_snippet_name']);
+            // Check if snippet name already exists in the database (exclude current snippet if updating)
+            $query = $wpdb->prepare("SELECT id FROM {$wpdb->prefix}aveo_custom_code WHERE name = %s AND id != %d", $snippet_name, $snippet_id);
+            $existing_id = $wpdb->get_var($query);
 
-            // Define the base directory for the snippets
-            $snippets_dir = plugin_dir_path(__FILE__) . 'aveo-stored-snippets/';
-
-            // Check if the directory exists, and if not, create it
-            if (!file_exists($snippets_dir)) {
-                wp_mkdir_p($snippets_dir); // WordPress function to create a directory if it doesn't exist
-            }
-
-            // Now adjust the file path to include this directory
-            $file = $snippets_dir . $snippet_name_sanitized . '.php';
-    
-            // Check if file already exists to avoid unnecessary operations
-            if (!file_exists($file)) {
-                $handle = fopen($file, 'w') or die('Cannot open file:  '.$file); // implicitly creates file
-
-                // Define the content of your PHP file
-                $content = "<?php\n" . $snippet_code_sanitized;
+            if ($existing_id) {
                 
-                fwrite($handle, $content);
-                fclose($handle);
+                set_transient('aveo_snippet_error_message', 'Snippet name already exists. Please choose a different name.', 30); // 30 seconds 
+
+                $redirect_url = add_query_arg([
+                    'page' => 'aveo-custom-code-create-snippet',
+                ], admin_url('admin.php'));
+
+                wp_redirect($redirect_url);
+                echo '<div class="notice notice-error is-dismissible"><p>Snippet name already exists. Please choose a different name.</p></div>';
+                exit;
             }
 
-            // Prepare data for insertion
-            $data = array(
-                'name' => $snippet_name_sanitized,
-                'code' => $snippet_code_sanitized,
-                'type' => 'php', // Assuming you're storing PHP snippets. Adjust as necessary.
-                'is_active' => isset($_POST['aveo_snippet_active']) ? 1 : 0, // Check if the snippet should be active or not
-                'file' => $file,
-            );
+            // Proceed with file creation and database insertion/update
+            $snippets_dir = plugin_dir_path(__FILE__) . 'aveo-stored-snippets/';
+            if (!file_exists($snippets_dir)) {
+                wp_mkdir_p($snippets_dir);
+            }
 
-            // Define data format for insertion
-            $format = array('%s', '%s', '%s', '%d', '%s');
+            $file_path = $snippets_dir . $snippet_name . '.php';
+            file_put_contents($file_path, "<?php\n" . $snippet_code);
 
-            // Insert data into the database
-            $wpdb->insert(
-                $wpdb->prefix . 'aveo_custom_code', // Table name
-                $data,
-                $format
-            );
+            $data = [
+                'name' => $snippet_name,
+                'code' => $snippet_code,
+                'type' => 'php', // Adjust as necessary
+                'is_active' => $is_active,
+                'file' => $file_path,
+            ];
 
-            // After processing, redirect to avoid form resubmission issues
-            wp_redirect(add_query_arg('aveo_action', 'snippet_saved', admin_url('admin.php?page=aveo-custom-code-create-snippet')));
+            if ($snippet_id > 0) {
+                // Update existing snippet
+                $wpdb->update("{$wpdb->prefix}aveo_custom_code", $data, ['id' => $snippet_id]);
+            } else {
+                // Insert new snippet
+                $wpdb->insert("{$wpdb->prefix}aveo_custom_code", $data);
+                $snippet_id = $wpdb->insert_id;
+            }
+
+            set_transient('aveo_snippet_success_message', 'Snippet successfully saved and activated.', 30); // 30 seconds expiration
+
+            // Redirect after successful insert/update
+            wp_redirect(add_query_arg([
+                'page' => 'aveo-custom-code-edit-snippet',
+                'snippet_id' => $snippet_id,
+                'aveo_action' => 'snippet_saved'
+            ], admin_url('admin.php')));
             exit;
         }
     }
 }
 add_action('admin_init', 'aveo_process_snippet_submission');
-
 
 // Function to run snippets saved in the database
 function aveo_execute_custom_php_snippets() {
