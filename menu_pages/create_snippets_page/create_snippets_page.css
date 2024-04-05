@@ -1,0 +1,19 @@
+.aveo-custom-code-snippet-condition-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    position: sticky;
+    top: 0; 
+    right: -50;
+}
+.aveo-custom-code-wrap {
+    width: 80%;
+    position: relative;
+}
+#aveo-code-editor {
+    height: 500px;
+}
+.CodeMirror {
+    height: 700px !important;
+}

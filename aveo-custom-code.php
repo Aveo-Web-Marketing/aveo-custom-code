@@ -83,14 +83,16 @@ function aveo_custom_code_menu() {
     );
 
     // Submenu for editing a snippet
-    $edit_snippet_hook_suffix = add_submenu_page(
-        'aveo-custom-code',
-        'Edit Snippet',
-        'Edit Snippet',
-        'manage_options',
-        'aveo-custom-code-edit-snippet',
-        'aveo_custom_code_edit_snippet_page'
-    );
+    if (isset($_REQUEST['page']) && $_REQUEST['page'] === 'aveo-custom-code-edit-snippet') {
+        $edit_snippet_hook_suffix = add_submenu_page(
+            'aveo-custom-code',
+            'Edit Snippet',
+            'Edit Snippet',
+            'manage_options',
+            'aveo-custom-code-edit-snippet',
+            'aveo_custom_code_edit_snippet_page'
+        );
+    }
 
     // Enqueue script for initializing the CodeMirror editor. This script will only be loaded on the create snippet page. It uses the $create_snippet_hook_suffix variable to check if it should be loaded.
     add_action('admin_enqueue_scripts', function ($hook) {
@@ -165,15 +167,6 @@ function aveo_custom_code_menu() {
         wp_enqueue_style('wp-codemirror');
     });
 
-    // Submenu for importing snippets
-    add_submenu_page(
-        'aveo-custom-code',
-        'Import Snippet',
-        'Import Snippet',
-        'manage_options',
-        'aveo-custom-code-import',
-        'aveo_custom_code_import_page'
-    );
 }
 
 // Include the menu page manager file
