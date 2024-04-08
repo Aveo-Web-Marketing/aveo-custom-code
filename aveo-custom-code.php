@@ -182,7 +182,7 @@ function aveo_custom_code_menu() {
                 // Default case if needed
                 default:
                     // Default settings or log an error
-                break;
+                    break;
             }
         }
 
