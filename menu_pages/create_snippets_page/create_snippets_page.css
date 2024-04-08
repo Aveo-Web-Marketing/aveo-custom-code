@@ -7,7 +7,7 @@
     width: 20%;
     height: 275px;
     position: sticky;
-    top: 45;
+    top: 45px;
     padding: 20px 10px;
 }
 .aveo-custom-code-snippet-condition-wrap div {
@@ -20,8 +20,6 @@
 }
 .CodeMirror {
     height: 1000px !important;
-}
-.aveo-custom-code-wrap {
 }
 .aveo-custom-code-wrap form {
     display: flex;

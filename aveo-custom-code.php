@@ -35,7 +35,6 @@ function aveo_custom_code_install() {
             type varchar(100) NOT NULL,
             is_active BOOLEAN NOT NULL DEFAULT TRUE,
             file varchar(255) NOT NULL,
-            document_type varchar(255) NOT NULL,
             display_condition varchar(255) NOT NULL,
             PRIMARY KEY  (id)
         ) {$charset_collate};";
@@ -209,25 +208,41 @@ function aveo_process_snippet_submission() {
                 exit;
             }
 
+            $current_file_path = '';
+            if ($snippet_id > 0) {
+                $current_file_path = $wpdb->get_var($wpdb->prepare("SELECT file FROM {$wpdb->prefix}aveo_custom_code WHERE id = %d", $snippet_id));
+            }
+
             // Proceed with file creation and database insertion/update
             $snippets_dir = plugin_dir_path(__FILE__) . 'aveo-stored-snippets/';
             if (!file_exists($snippets_dir)) {
                 wp_mkdir_p($snippets_dir);
             }
 
-            $file_path = $snippets_dir . $snippet_name . '.php';
-            file_put_contents($file_path, "<?php\n" . $snippet_code);
+            $new_file_path = $snippets_dir . $snippet_name . '.php';
+
+            // Determine if renaming is necessary
+            if (!empty($current_file_path) && $current_file_path !== $new_file_path) {
+                // Attempt to rename the file, check if old file exists
+                if (file_exists($current_file_path)) {
+                    rename($current_file_path, $new_file_path);
+                }
+            } else {
+                // Create or overwrite the file with new content if not a rename operation
+                file_put_contents($new_file_path, "<?php\n" . $snippet_code);
+            }
 
             $data = [
                 'name' => $snippet_name,
                 'code' => $snippet_code,
-                'type' => 'php', // Adjust as necessary
+                'type' => $document_type,
                 'is_active' => $is_active,
                 'file' => $file_path,
                 'description' => $snippet_description,
-                'document_type' => $document_type,
                 'display_condition' => $display_condition,
             ];
+
+            $data['file'] = $new_file_path;
 
             if ($snippet_id > 0) {
                 // Update existing snippet
@@ -258,17 +273,36 @@ function aveo_execute_custom_php_snippets() {
 
     global $wpdb;
     $table_name = $wpdb->prefix . 'aveo_custom_code';
-    $php_snippets = $wpdb->get_results("SELECT * FROM {$table_name} WHERE type = 'php'", OBJECT);
+    $php_snippets = $wpdb->get_results("SELECT * FROM {$table_name} WHERE type = 'php' AND is_active = 1", OBJECT);
 
     foreach ($php_snippets as $snippet) {
-        // Check if the snippet is active
-        if ($snippet->is_active == 1) {
-            // Include the file
+        $should_execute = false;
+
+        // Determine where to run the snippet based on display_condition
+        switch ($snippet->display_condition) {
+            case 'everywhere':
+                $should_execute = true;
+                break;
+            case 'only_frontend':
+                if (!is_admin()) { // Check if not in the admin dashboard
+                    $should_execute = true;
+                }
+                break;
+            case 'only_backend':
+                if (is_admin()) { // Check if in the admin dashboard
+                    $should_execute = true;
+                }
+                break;
+            // Add more conditions as needed
+        }
+
+        if ($should_execute) {
             include $snippet->file;
         }
     }
 }
 add_action('init', 'aveo_execute_custom_php_snippets', 1);
+
 
 
 

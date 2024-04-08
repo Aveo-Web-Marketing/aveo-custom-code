@@ -21,6 +21,7 @@ function aveo_custom_code_edit_snippet_page() {
     $snippet_name = '';
     $snippet_code = '';
     $snippet_active = '';
+    $snippet_description = '';
 
     // If a valid snippet ID is provided, attempt to retrieve the snippet from the database
     if ($snippet_id > 0) {
@@ -32,6 +33,80 @@ function aveo_custom_code_edit_snippet_page() {
             $snippet_name = esc_attr($snippet->name);
             $snippet_code = esc_textarea($snippet->code); 
             $snippet_active = checked($snippet->is_active, 1, false);
+            $snippet_description = esc_textarea($snippet->description);
+            $snippet_type = esc_attr($snippet->type);
+            $snippet_condition = esc_attr($snippet->display_condition);
+
+            $snippet_type_option = '';
+            if ($snippet_type == 'php') {
+                $snippet_type_option = '
+                    <option value="php">PHP</option>
+                    <option value="css">CSS</option>
+                    <option value="js">JavaScript</option>
+                ';
+            } elseif ($snippet_type == 'css') {
+                $snippet_type_option = '
+                    <option value="css">CSS</option>
+                    <option value="php">PHP</option>
+                    <option value="js">JavaScript</option>
+                ';
+            } elseif ($snippet_type == 'js') {
+                $snippet_type_option = '
+                    <option value="js">JavaScript</option>
+                    <option value="php">PHP</option>
+                    <option value="css">CSS</option>
+                ';
+            }
+
+            $snippet_condition_option = '';
+            if ($snippet_type == 'php' && $snippet_condition == 'everywhere') {
+                $snippet_condition_option = '
+                    <option value="everywhere">Everywhere</option>
+                    <option value="only_frontend">Only in the Frontend</option>
+                    <option value="only_backend">Only in the WP backend</option>
+                ';
+            } elseif ($snippet_type == 'php' && $snippet_condition == 'only_frontend') {
+                $snippet_condition_option = '
+                    <option value="only_frontend">Only in the Frontend</option>
+                    <option value="everywhere">Everywhere</option>
+                    <option value="only_backend">Only in the WP backend</option>
+                ';
+            } elseif ($snippet_type == 'php' && $snippet_condition == 'only_backend') {
+                $snippet_condition_option = '
+                    <option value="only_backend">Only in the WP backend</option>
+                    <option value="everywhere">Everywhere</option>
+                    <option value="only_frontend">Only in the Frontend</option>
+                ';
+            } elseif ($snippet_type == 'css' && $snippet_condition == 'everywhere') {
+                $snippet_condition_option = '
+                    <option value="everywhere">Everywhere</option>
+                    <option value="only_frontend">Only in the Frontend</option>
+                    <option value="only_backend">Only in the WP backend</option>
+                ';
+            } elseif ($snippet_type == 'css' && $snippet_condition == 'only_frontend') {
+                $snippet_condition_option = '
+                    <option value="only_frontend">Only in the Frontend</option>
+                    <option value="everywhere">Everywhere</option>
+                    <option value="only_backend">Only in the WP backend</option>
+                ';
+            } elseif ($snippet_type == 'css' && $snippet_condition == 'only_backend') {
+                $snippet_condition_option = '
+                    <option value="only_backend">Only in the WP backend</option>
+                    <option value="everywhere">Everywhere</option>
+                    <option value="only_frontend">Only in the Frontend</option>
+                ';
+            } elseif ($snippet_type == 'js' && $snippet_condition == 'header') {
+                $snippet_condition_option = '
+                    <option value="header">In the header</option>
+                    <option value="body_end">In the body-end</option>
+
+                ';
+            }  elseif ($snippet_type == 'js' && $snippet_condition == 'body_end') {
+                $snippet_condition_option = '
+                    <option value="body_end">In the body-end</option>
+                    <option value="header">In the header</option>
+                ';
+            }
         }
     }
 
@@ -41,26 +116,23 @@ function aveo_custom_code_edit_snippet_page() {
             <form action="" method="post" id="aveo-custom-code-form">
                 <div class="aveo-custom-code-snippet-info">
                     <input type="hidden" name="snippet_id" value="' . $snippet_id . '">
-                    <input type="text" name="aveo_snippet_name" value="' . $snippet_name . '" placeholder="Snippet Name" style="width:100%; margin-bottom:10px;">
-                    <textarea id="aveo-code-editor" name="aveo_code_editor" style="width:100%; height:300px;">' . $snippet_code . '</textarea>
+                    <input type="text" name="aveo_snippet_name" value="' . $snippet_name . '" placeholder="Snippet Name" style="width:100%;">
+                    <input type="textarea" name="aveo_snippet_description" value="'. $snippet_description .'" placeholder="Write  the description of you custom code here." style="width:100%;">
+                    <textarea id="aveo-code-editor" name="aveo_code_editor" style="width:100%;">' . $snippet_code . '</textarea>
                     ' . wp_nonce_field('aveo_custom_code_action', 'aveo_custom_code_nonce', true, false) . '
                 </div>
                 <div class="aveo-custom-code-snippet-condition-wrap">
                     <div>
                         <label for="Snippet type">Document Type</label>
                         <select name="aveo_snippet_type">
-                            <option value="php">PHP</option>
-                            <option value="css">CSS</option>
-                            <option value="js">JavaScript</option>
+                            ' . $snippet_type_option . '
                         </select>
                         <span>This should match the code you write</span>
                     </div>
                     <div>
                         <label for="Snippet Condition">Where to run code</label>
                         <select name="aveo_snippet_condition">
-                            <option value="everywhere">Everywhere</option>
-                            <option value="only_frontend">Only in the Frontend</option>
-                            <option value="only_backend">Only in the WP backend</option>
+                            ' . $snippet_condition_option . '
                         </select>
                     </div>
                     <div>

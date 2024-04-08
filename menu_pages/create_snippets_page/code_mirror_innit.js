@@ -11,11 +11,13 @@ jQuery(document).ready(function($) {
     var optionsForTypes = {
         php: [
             { value: "everywhere", text: "Everywhere" },
+            { value: "only_frontend", text: "Only in the Frontend" },
             { value: "only_backend", text: "Only in the WP backend" }
         ],
         css: [
             { value: "everywhere", text: "Everywhere" },
-            { value: "only_frontend", text: "Only in the Frontend" }
+            { value: "only_frontend", text: "Only in the Frontend" },
+            { value: "only_backend", text: "Only in the WP backend" }
         ],
         js: [
             { value: "header", text: "In the Header" },
@@ -39,7 +41,7 @@ jQuery(document).ready(function($) {
     if (typeof cm_settings !== 'undefined' && cm_settings.codeEditor) {
         var editor = wp.codeEditor.initialize($('#aveo-code-editor'), cm_settings.codeEditor);
     }
-
     console.log('cm_settings', cm_settings);
+    console.log(cm_settings.codeEditor.mode);
 });
 
