@@ -128,13 +128,13 @@ function aveo_custom_code_menu() {
             if (!is_null($snippet_type)) {
                 switch ($snippet_type) {
                     case 'php':
-                        $language_type = 'text/x-php'; // Correct MIME type for PHP
+                        $language_type = 'text/x-php'; 
                         break;
                     case 'css':
-                        $language_type = 'text/css'; // MIME type for CSS
+                        $language_type = 'text/css'; 
                         break;
                     case 'js':
-                        $language_type = 'text/javascript'; // MIME type for JavaScript
+                        $language_type = 'text/javascript'; 
                         break;
                     // Add other cases as needed
                 }
