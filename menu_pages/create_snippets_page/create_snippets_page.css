@@ -1,19 +1,33 @@
 .aveo-custom-code-snippet-condition-wrap {
     display: flex;
     justify-content: space-between;
-    align-items: center;
     flex-direction: column;
+    background-color: #fff;
+    gap: 20px;
+    width: 20%;
+    height: 275px;
     position: sticky;
-    top: 0; 
-    right: -50;
+    top: 45;
+    padding: 20px 10px;
 }
-.aveo-custom-code-wrap {
-    width: 80%;
-    position: relative;
+.aveo-custom-code-snippet-condition-wrap div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
-#aveo-code-editor {
-    height: 500px;
+#aveo-custom-code-form {
+    width: 100%;
 }
 .CodeMirror {
-    height: 700px !important;
+    height: 1000px !important;
+}
+.aveo-custom-code-wrap {
+}
+.aveo-custom-code-wrap form {
+    display: flex;
+    position: relative;
+    gap: 20px;
+}
+.aveo-custom-code-snippet-info {
+    width: 75%;
 }

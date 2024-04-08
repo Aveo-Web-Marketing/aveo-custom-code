@@ -30,10 +30,13 @@ function aveo_custom_code_install() {
         $sql = "CREATE TABLE {$table_name} (
             id mediumint(9) NOT NULL AUTO_INCREMENT,
             name varchar(255) NOT NULL,
+            description text NOT NULL,
             code text NOT NULL,
             type varchar(100) NOT NULL,
             is_active BOOLEAN NOT NULL DEFAULT TRUE,
             file varchar(255) NOT NULL,
+            document_type varchar(255) NOT NULL,
+            display_condition varchar(255) NOT NULL,
             PRIMARY KEY  (id)
         ) {$charset_collate};";
 
@@ -184,7 +187,10 @@ function aveo_process_snippet_submission() {
             $snippet_id = isset($_POST['snippet_id']) ? intval($_POST['snippet_id']) : 0;
             $snippet_name = sanitize_text_field($_POST['aveo_snippet_name']);
             $snippet_code = sanitize_textarea_field(stripslashes($_POST['aveo_code_editor']));
+            $snippet_description = sanitize_textarea_field($_POST['aveo_snippet_description']);
             $is_active = isset($_POST['aveo_snippet_active']) ? 1 : 0;
+            $document_type = isset($_POST['aveo_snippet_type']) ? $_POST['aveo_snippet_type'] : null;
+            $display_condition = isset($_POST['aveo_snippet_condition']) ? $_POST['aveo_snippet_condition'] : null;
 
             // Check if snippet name already exists in the database (exclude current snippet if updating)
             $query = $wpdb->prepare("SELECT id FROM {$wpdb->prefix}aveo_custom_code WHERE name = %s AND id != %d", $snippet_name, $snippet_id);
@@ -218,6 +224,9 @@ function aveo_process_snippet_submission() {
                 'type' => 'php', // Adjust as necessary
                 'is_active' => $is_active,
                 'file' => $file_path,
+                'description' => $snippet_description,
+                'document_type' => $document_type,
+                'display_condition' => $display_condition,
             ];
 
             if ($snippet_id > 0) {

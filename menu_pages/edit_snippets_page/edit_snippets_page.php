@@ -39,13 +39,38 @@ function aveo_custom_code_edit_snippet_page() {
         <div class="aveo-custom-code-wrap">
             <h1>Edit snippet</h1>
             <form action="" method="post" id="aveo-custom-code-form">
-                <input type="hidden" name="snippet_id" value="' . $snippet_id . '">
-                <input type="text" name="aveo_snippet_name" value="' . $snippet_name . '" placeholder="Snippet Name" style="width:100%; margin-bottom:10px;">
-                <textarea id="aveo-code-editor" name="aveo_code_editor" style="width:100%; height:300px;">' . $snippet_code . '</textarea>
-                ' . wp_nonce_field('aveo_custom_code_action', 'aveo_custom_code_nonce', true, false) . '
-                <input type="submit" name="aveo_submit_snippet" value="Save Snippet" class="button button-primary">
-                <input type="checkbox" name="aveo_snippet_active" value="1" ' . $snippet_active . '> <span>Activate Snippet</span>
+                <div class="aveo-custom-code-snippet-info">
+                    <input type="hidden" name="snippet_id" value="' . $snippet_id . '">
+                    <input type="text" name="aveo_snippet_name" value="' . $snippet_name . '" placeholder="Snippet Name" style="width:100%; margin-bottom:10px;">
+                    <textarea id="aveo-code-editor" name="aveo_code_editor" style="width:100%; height:300px;">' . $snippet_code . '</textarea>
+                    ' . wp_nonce_field('aveo_custom_code_action', 'aveo_custom_code_nonce', true, false) . '
+                </div>
+                <div class="aveo-custom-code-snippet-condition-wrap">
+                    <div>
+                        <label for="Snippet type">Document Type</label>
+                        <select name="aveo_snippet_type">
+                            <option value="php">PHP</option>
+                            <option value="css">CSS</option>
+                            <option value="js">JavaScript</option>
+                        </select>
+                        <span>This should match the code you write</span>
+                    </div>
+                    <div>
+                        <label for="Snippet Condition">Where to run code</label>
+                        <select name="aveo_snippet_condition">
+                            <option value="everywhere">Everywhere</option>
+                            <option value="only_frontend">Only in the Frontend</option>
+                            <option value="only_backend">Only in the WP backend</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="Snippet activation">Activate snippet on save</label>
+                        <input type="checkbox" name="aveo_snippet_active" value="1" ' . $snippet_active . '>
+                    </div>
+                    <input type="submit" name="aveo_submit_snippet" value="Save Snippet" class="button button-primary">
+                </div>
             </form>
+            
         </div>
     ';
 
