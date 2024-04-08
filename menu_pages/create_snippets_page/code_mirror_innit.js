@@ -42,6 +42,6 @@ jQuery(document).ready(function($) {
         var editor = wp.codeEditor.initialize($('#aveo-code-editor'), cm_settings.codeEditor);
     }
     console.log('cm_settings', cm_settings);
-    console.log(cm_settings.codeEditor.mode);
+    
 });
 

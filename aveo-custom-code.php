@@ -99,6 +99,8 @@ function aveo_custom_code_menu() {
     // Enqueue script for initializing the CodeMirror editor. This script will only be loaded on the create snippet page. It uses the $create_snippet_hook_suffix variable to check if it should be loaded.
     add_action('admin_enqueue_scripts', function ($hook) {
         
+        global $wpdb;
+
         $pages = array(
             'aveo-custom-code-create-snippet',
             'aveo-custom-code-edit-snippet',
@@ -110,55 +112,36 @@ function aveo_custom_code_menu() {
             return;
         }
     
+        $snippet_id = isset($_GET['snippet_id']) ? intval($_GET['snippet_id']) : 0;
+
+        $language_type = 'text/x-php'; // A default value in case no specific type is found
+
         wp_enqueue_script('aveo-custom-code-create-snippets-page', plugin_dir_url(__FILE__) . 'menu_pages/create_snippets_page/code_mirror_innit.js', array('jquery'), '1.0', true);
     
-        // Prepare CodeMirror for code editing, assuming PHP for this example
-        $language_type = 'text/x-php'; // This could be dynamic
-        $settings = wp_enqueue_code_editor(array('type' => $language_type));
-
-        // Now, adjust settings based on the language type
-        if (is_array($settings) && isset($settings['codemirror'])) {
-            switch ($language_type) {
-                case 'text/x-php':
-                    $settings['codemirror'] = array_merge(
-                        $settings['codemirror'],
-                        array(
-                            'mode' => $language_type,
-                            'autoCloseBrackets' => true,
-                            'autoCloseTags' => true,
-                            'matchBrackets' => true,
-                            'matchTags' => array('bothTags' => true),
-                            'extraKeys'        => array(
-                                'Alt-Space' => 'autocomplete',
-                                'Ctrl-/'     => 'toggleComment',
-                                'Cmd-/'      => 'toggleComment',
-                                'Alt-F'      => 'findPersistent',
-                                'Ctrl-F'     => 'findPersistent',
-                                'Cmd-F'      => 'findPersistent',
-                            ),
-                            'gutters' => array('CodeMirror-lint-markers'),
-                            'indentWithTabs' => true,
-                            'lineWrapping' => true,
-                            'highlightSelectionMatches' => array('showToken' => '/\w/', 'annotateScrollbar' => true)
-                        )
-                    );
-                    break;
-                // Add cases for other languages as needed
-                case 'text/css':
-                    $settings['codemirror'] = array_merge(
-                        $settings['codemirror'],
-                        array(
-                            'mode' => $language_type,
-                            // Other CSS-specific settings here
-                        )
-                    );
-                    break;
-                // Default case if needed
-                default:
-                    // Default settings or log an error
-                    break;
+        if ($snippet_id > 0) {
+            // Fetch the language type directly based on the snippet ID
+            $table_name = $wpdb->prefix . 'aveo_custom_code';
+            $query = $wpdb->prepare("SELECT type FROM $table_name WHERE id = %d", $snippet_id);
+            $snippet_type = $wpdb->get_var($query);
+    
+            // Map the snippet_type to the corresponding CodeMirror MIME type
+            if (!is_null($snippet_type)) {
+                switch ($snippet_type) {
+                    case 'php':
+                        $language_type = 'text/x-php'; // Correct MIME type for PHP
+                        break;
+                    case 'css':
+                        $language_type = 'text/css'; // MIME type for CSS
+                        break;
+                    case 'js':
+                        $language_type = 'text/javascript'; // MIME type for JavaScript
+                        break;
+                    // Add other cases as needed
+                }
             }
         }
+
+        $settings = wp_enqueue_code_editor(array('type' => $language_type));
 
         if (false !== $settings) {
             wp_localize_script('aveo-custom-code-create-snippets-page', 'cm_settings', array('codeEditor' => $settings));
