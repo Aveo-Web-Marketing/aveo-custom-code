@@ -245,7 +245,7 @@ function aveo_process_snippet_submission() {
                 wp_mkdir_p($snippets_dir);
             }
 
-            $new_file_path = $snippets_dir . $snippet_name . '.php';
+            $new_file_path = $snippets_dir . $snippet_name . '.' . $document_type;
 
             // Determine if renaming is necessary
             if (!empty($current_file_path) && $current_file_path !== $new_file_path) {
@@ -255,7 +255,14 @@ function aveo_process_snippet_submission() {
                 }
             } else {
                 // Create or overwrite the file with new content if not a rename operation
-                file_put_contents($new_file_path, "<?php\n" . $snippet_code);
+
+                // php file header
+                $php_file_header = "<?php\n";
+                if ($document_type === 'php') {
+                    $snippet_code = $php_file_header . $snippet_code;
+                }
+                
+                file_put_contents($new_file_path, $snippet_code);
             }
 
             $data = [

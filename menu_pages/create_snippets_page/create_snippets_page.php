@@ -34,7 +34,7 @@ function aveo_custom_code_create_snippet_page() {
                 <div class="aveo-custom-code-snippet-condition-wrap">
                     <div>
                         <label for="Snippet type">Document Type</label>
-                        <select name="aveo_snippet_type">
+                        <select class="aveo_snippet_type" name="aveo_snippet_type">
                             <option value="php">PHP</option>
                             <option value="css">CSS</option>
                             <option value="js">JavaScript</option>
