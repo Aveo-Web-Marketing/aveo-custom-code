@@ -211,7 +211,11 @@ function aveo_process_snippet_submission() {
         if (current_user_can('manage_options')) {
             $snippet_id = isset($_POST['snippet_id']) ? intval($_POST['snippet_id']) : 0;
             $snippet_name = sanitize_text_field($_POST['aveo_snippet_name']);
-            $snippet_code = sanitize_textarea_field(stripslashes($_POST['aveo_code_editor']));
+
+            // Decode entities for the code editor content
+            $snippet_code_raw = stripslashes($_POST['aveo_code_editor']);
+            $snippet_code = html_entity_decode($snippet_code_raw, ENT_QUOTES | ENT_HTML5);
+
             $snippet_description = sanitize_textarea_field($_POST['aveo_snippet_description']);
             $is_active = isset($_POST['aveo_snippet_active']) ? 1 : 0;
             $document_type = isset($_POST['aveo_snippet_type']) ? $_POST['aveo_snippet_type'] : null;
@@ -256,12 +260,16 @@ function aveo_process_snippet_submission() {
             } else {
                 // Create or overwrite the file with new content if not a rename operation
 
-                // php file header
-                $php_file_header = "<?php\n";
+                // Check if the document type is PHP
                 if ($document_type === 'php') {
-                    $snippet_code = $php_file_header . $snippet_code;
+                    // Trim whitespace and check if the code does not start with <?php
+                    if (strpos(trim($snippet_code), '<?php') !== 0) {
+                        // If it doesn't, prepend <?php to the code
+                        $snippet_code = '<?php ' . "\n" . $snippet_code;
+                    }
                 }
-                
+
+
                 file_put_contents($new_file_path, $snippet_code);
             }
 
