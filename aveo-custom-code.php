@@ -219,6 +219,7 @@ function aveo_process_snippet_submission() {
             $snippet_description = sanitize_textarea_field($_POST['aveo_snippet_description']);
             $is_active = isset($_POST['aveo_snippet_active']) ? 1 : 0;
             $document_type = isset($_POST['aveo_snippet_type']) ? $_POST['aveo_snippet_type'] : null;
+            $current_document_type = $snippet_id > 0 ? $wpdb->get_var($wpdb->prepare("SELECT type FROM {$wpdb->prefix}aveo_custom_code WHERE id = %d", $snippet_id)) : '';
             $display_condition = isset($_POST['aveo_snippet_condition']) ? $_POST['aveo_snippet_condition'] : null;
 
             // Check if snippet name already exists in the database (exclude current snippet if updating)
@@ -268,7 +269,6 @@ function aveo_process_snippet_submission() {
                         $snippet_code = '<?php ' . "\n" . $snippet_code;
                     }
                 }
-
 
                 file_put_contents($new_file_path, $snippet_code);
             }
