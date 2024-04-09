@@ -124,7 +124,7 @@ function aveo_custom_code_edit_snippet_page() {
                 <div class="aveo-custom-code-snippet-condition-wrap">
                     <div>
                         <label for="Snippet type">Document Type</label>
-                        <select name="aveo_snippet_type">
+                        <select class="aveo_snippet_type" name="aveo_snippet_type">
                             ' . $snippet_type_option . '
                         </select>
                         <span>This should match the code you write</span>
