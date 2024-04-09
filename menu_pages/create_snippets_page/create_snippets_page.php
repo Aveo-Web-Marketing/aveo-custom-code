@@ -26,9 +26,12 @@ function aveo_custom_code_create_snippet_page() {
             <h1>Create New Snippet</h1>
             <form action="" method="post" id="aveo-custom-code-form">
                 <div class="aveo-custom-code-snippet-info">
-                    <input type="text" name="aveo_snippet_name" placeholder="Snippet Name" style="width:100%;">
-                    <input type="textarea" name="aveo_snippet_description" placeholder="Write  the description of you custom code here." style="width:100%;">
-                    <textarea id="aveo-code-editor" name="aveo_code_editor" style="width:100%;"></textarea>
+                    <input type="text" name="aveo_snippet_name" placeholder="Snippet Name">
+                    <div>
+                        <label for="Snippet Description">Description</label>
+                        <textarea name="aveo_snippet_description" placeholder="Write  the description of you custom code here."></textarea>
+                    </div>
+                    <textarea id="aveo-code-editor" name="aveo_code_editor"></textarea>
                     ' . wp_nonce_field('aveo_custom_code_action', 'aveo_custom_code_nonce', true, false) . '
                 </div>
                 <div class="aveo-custom-code-snippet-condition-wrap">

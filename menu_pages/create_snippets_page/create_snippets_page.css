@@ -28,4 +28,22 @@
 }
 .aveo-custom-code-snippet-info {
     width: 75%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.aveo-custom-code-snippet-info input {
+    width: 100%;
+}
+.aveo-custom-code-snippet-info textarea {
+    width: 100%;
+}
+.aveo-custom-code-snippet-info label {
+    font-size: 16px;
+    font-weight: bold;
+}
+.aveo-custom-code-snippet-info div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
