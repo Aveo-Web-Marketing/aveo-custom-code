@@ -36,6 +36,8 @@ function aveo_custom_code_install() {
             is_active BOOLEAN NOT NULL DEFAULT TRUE,
             file varchar(255) NOT NULL,
             display_condition varchar(255) NOT NULL,
+            modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            priority int(11) NOT NULL DEFAULT 10,
             PRIMARY KEY  (id)
         ) {$charset_collate};";
 
@@ -221,6 +223,8 @@ function aveo_process_snippet_submission() {
             $document_type = isset($_POST['aveo_snippet_type']) ? $_POST['aveo_snippet_type'] : null;
             $current_document_type = $snippet_id > 0 ? $wpdb->get_var($wpdb->prepare("SELECT type FROM {$wpdb->prefix}aveo_custom_code WHERE id = %d", $snippet_id)) : '';
             $display_condition = isset($_POST['aveo_snippet_condition']) ? $_POST['aveo_snippet_condition'] : null;
+            $modified = current_time('mysql');
+            $priority = isset($_POST['aveo_snippet_priority']) ? intval($_POST['aveo_snippet_priority']) : 10;
 
             // Check if snippet name already exists in the database (exclude current snippet if updating)
             $query = $wpdb->prepare("SELECT id FROM {$wpdb->prefix}aveo_custom_code WHERE name = %s AND id != %d", $snippet_name, $snippet_id);
@@ -281,6 +285,8 @@ function aveo_process_snippet_submission() {
                 'file' => $file_path,
                 'description' => $snippet_description,
                 'display_condition' => $display_condition,
+                'modified' => $modified,
+                'priority' => $priority
             ];
 
             $data['file'] = $new_file_path;

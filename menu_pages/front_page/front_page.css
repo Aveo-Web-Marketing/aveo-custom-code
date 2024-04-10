@@ -1,0 +1,101 @@
+.aveo-custom-code-wrap .wp-list-table {
+    width: 100%;
+}
+.snippet-type-filter-wrap {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    border-bottom: 1px solid #CACACA;
+    position: relative;
+}
+.snippet-type-filter-wrap div {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background-color: #E2E2E2;
+    border: 1px solid #CACACA;
+    border-bottom: 0;
+    padding: 10px 20px;
+}
+.num-of-snippets {
+    position: absolute;
+    right: 30px;
+}
+.snippet-table {
+    background-color: #fff;
+}
+.snippet-table {
+    border-collapse: collapse; 
+}
+
+.snippet-table td, .snippet-table th {
+    border-bottom: 1px solid #CACACA; 
+}
+.snippet-actions {
+    display: flex;
+}
+.snippet-actions a {
+    border-right: 1px solid #CACACA;
+    padding: 2px 8px;
+}
+.snippet-actions a:last-child {
+    border-right: 0;
+}
+
+/* Hide default checkbox */
+.snippet-activate-switch {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+}
+
+/* Style the label to look like a switch */
+.switch {
+    position: relative;
+    display: block; /* Change to inline-block if you prefer it inline */
+    width: 30px; /* Width of the switch */
+    height: 17px; /* Height of the switch */
+    margin-left: 20px; /* Space for the label text */
+}
+
+/* The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    right: 0; /* Aligns the switch to the right of the label */
+    bottom: 0;
+    left: 0; /* Adjust based on label width */
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 13px;
+    width: 13px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    transition: .4s;
+}
+
+input:checked + label .slider {
+    background-color: #2196F3;
+}
+
+input:checked + label .slider:before {
+    transform: translateX(13px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
