@@ -1,12 +1,20 @@
+.aveo-custom-code-wrap {
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
 .aveo-custom-code-wrap .wp-list-table {
     width: 100%;
 }
 .snippet-type-filter-wrap {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 15px;
     border-bottom: 1px solid #CACACA;
     position: relative;
+    
 }
 .snippet-type-filter-wrap div {
     display: flex;
@@ -16,6 +24,11 @@
     border: 1px solid #CACACA;
     border-bottom: 0;
     padding: 10px 20px;
+}
+.snippet-type-filter-wrap div.active {
+    background-color: #F0F0F1;
+    border-bottom: 1px solid #F0F0F1;
+    margin-bottom: -1px;
 }
 .num-of-snippets {
     position: absolute;
@@ -29,18 +42,43 @@
 }
 
 .snippet-table td, .snippet-table th {
-    border-bottom: 1px solid #CACACA; 
+    border-bottom: 2px solid #CACACA; 
+    text-align: left;
+}
+.snippet-table th {
+    padding: 10px;
+}
+.snippet-table td {
+    padding: 10px;
+}
+.snippet-table td:last-child, .snippet-table th:last-child {
+    text-align: center;
 }
 .snippet-actions {
     display: flex;
+    padding: 2px 0;
 }
 .snippet-actions a {
     border-right: 1px solid #CACACA;
     padding: 2px 8px;
+    text-decoration: none;
 }
 .snippet-actions a:last-child {
     border-right: 0;
+    color: #B12222;
 }
+.snippet-actions a:first-child {
+    padding-left: 0;
+}
+.snippet-name {
+    font-size: 16px;
+    margin: auto;
+    text-decoration: none;
+    margin: 10px 0;
+}
+
+
+/* Switch for snippet activation */
 
 /* Hide default checkbox */
 .snippet-activate-switch {
@@ -56,7 +94,6 @@
     display: block; /* Change to inline-block if you prefer it inline */
     width: 30px; /* Width of the switch */
     height: 17px; /* Height of the switch */
-    margin-left: 20px; /* Space for the label text */
 }
 
 /* The slider */
@@ -99,3 +136,50 @@ input:checked + label .slider:before {
 .slider.round:before {
     border-radius: 50%;
 }
+
+
+/* Hide import wrapper */
+.import-snippet-animate {
+    
+}
+.import-snippet-content {
+    display: flex;
+    gap: 20px;
+}
+
+/* Import input - style */
+.import-snippet-file-wrap {
+    width: 100%;
+}
+
+#file-input-label {
+    width: 100%;
+    height: 100%;
+    border: 1px solid #CACACA; 
+    border-radius: 10px; /* Rounded corners */
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    cursor: pointer; /* Change cursor on hover */
+    background-color: #FFFFFF; /* Light background */
+}
+.file-input-content {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+.custom-plus-icon {
+    font-size: 40px;
+    color: #000000;
+    border-radius: 50%;
+    padding: 0;
+    margin: 0;
+}
+
+.file-input-text {
+    display: block;
+    font-size: 16px;
+} 
+    
