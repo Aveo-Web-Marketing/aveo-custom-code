@@ -93,10 +93,10 @@ function aveo_custom_code_front_page() {
                 <p>Upload from this device</p>
                 <div class="import-snippet-content">
                     <div class="import-snippet-file-wrap">
-                        <input type="file" id="import-snippet-file" style="display:none;">
+                        <input type="file" id="import-snippet-file">
                         <label for="import-snippet-file" id="file-input-label">
                             <div class="file-input-content">
-                                <span class="dashicons dashicons-plus custom-plus-icon"></span>
+                                <span class="file-input-plus">+</span>
                                 <span class="file-input-text">Click or drag file here</span>
                             </div>
                         </label>

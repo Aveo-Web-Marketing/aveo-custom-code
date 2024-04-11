@@ -64,28 +64,47 @@ jQuery(function($) {
     });
 }); 
 
-
 // Function to create a drag and drop area for the import of snippets
-$(document).ready(function() {
+jQuery(document).ready(function($) {
+
+    console.log('Document ready');
     // Highlight the label on drag over
     $('#file-input-label').on('dragover', function(e) {
         e.preventDefault();
+        console.log('Drag over event triggered');
         $(this).addClass('dragover');
     });
 
     // Remove highlight from the label on drag leave
     $('#file-input-label').on('dragleave', function(e) {
         e.preventDefault();
+        console.log('Drag leave event triggered');
         $(this).removeClass('dragover');
     });
+
+    function updateUIWithFileInfo(files) {
+        // Assuming `files` is an array-like object of File objects
+        if (files.length > 0) {
+            console.log('File input changed or file dropped');
+            $('.file-input-text').text('File Uploaded: ' + files[0].name);
+            $('#file-input-label').css('backgroundColor', '#D4EDDA'); // Light green background
+            $('.file-input-plus').css('color', '#155724'); // Dark green color for the icon
+        }
+    }
 
     // Handle file drop
     $('#file-input-label').on('drop', function(e) {
         e.preventDefault();
+        console.log('File dropped');
         var files = e.originalEvent.dataTransfer.files; // Get the files that were dropped
         $('#import-snippet-file').prop('files', files); // Assign dropped files to file input
-
-        // Optional: Update text
-        $('.file-input-text').text('File Selected');
+        updateUIWithFileInfo(files); // Update UI
     });
+
+    $('#import-snippet-file').change(function() {
+        updateUIWithFileInfo(this.files); // Update UI
+    });
+    
 });
+
+

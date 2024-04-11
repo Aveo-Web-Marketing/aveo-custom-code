@@ -156,7 +156,7 @@ input:checked + label .slider:before {
     width: 100%;
     height: 100%;
     border: 1px solid #CACACA; 
-    border-radius: 10px; /* Rounded corners */
+    
     display: flex;
     justify-content: center; /* Center horizontally */
     align-items: center; /* Center vertically */
@@ -165,7 +165,7 @@ input:checked + label .slider:before {
 }
 .file-input-content {
     display: flex;
-    gap: 30px;
+    gap: 20px;
     align-items: center;
     flex-direction: column;
     justify-content: center;
@@ -182,4 +182,16 @@ input:checked + label .slider:before {
     display: block;
     font-size: 16px;
 } 
+
+.file-input-plus {
+    font-size: 60px;
+    color: #CACACA;
+} 
     
+.dragover {
+    border: 2px dashed #000; /* Example style */
+}
+
+#import-snippet-file {
+    display: none;
+}
