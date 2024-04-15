@@ -11,7 +11,7 @@ jQuery(function($) {
     });
 });
 
-// Function to run on ajax call atempt
+// Function to run on ajax call atempt - activate / deactivate snippet
 async function snippet_activation_status_update(snippet_id, activation_status) {
 
     // Convert boolean values to integers for PHP
@@ -50,7 +50,7 @@ jQuery(function($) {
     });
 });
 
-// Function to run on ajax call atempt
+// Function to run on ajax call atempt - delete snippet
 async function snippet_delete(snippet_id) {
     await jQuery.ajax(
         {
@@ -69,8 +69,35 @@ async function snippet_delete(snippet_id) {
             }
         }
     );
+    // delete the snippet file from the plugin directory
+
 }
 
+// Function to run on ajax call atempt - clone snippet
+async function snippet_clone(snippet_id) {
+    await jQuery.ajax({
+        url: '/wp-admin/admin-ajax.php',
+        type: 'POST',
+        data: {
+            action: 'aveo_custom_code_clone_snippet',
+            snippet_id: snippet_id
+        },
+        success: function(response) {
+            console.log('success');
+            location.reload();
+        },
+        error: function(response) {
+            console.log('error');
+        }
+    });
+}
+
+jQuery(function($) {
+    $(document).on('click', '.clone-snippet', function() {
+        var id = $(this).data('snippet_id');
+        snippet_clone(id);
+    });
+});
 
 // Filter snippets by type
 jQuery(function($) {
