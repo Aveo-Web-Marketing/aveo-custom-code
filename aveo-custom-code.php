@@ -314,41 +314,70 @@ function aveo_process_snippet_submission() {
 }
 add_action('admin_init', 'aveo_process_snippet_submission');
 
-// Function to run snippets saved in the database
-function aveo_execute_custom_php_snippets() {
+function aveo_execute_custom_code_snippets() {
     if (!current_user_can('manage_options')) return; // Security check for admin-only execution
 
     global $wpdb;
     $table_name = $wpdb->prefix . 'aveo_custom_code';
-    $php_snippets = $wpdb->get_results("SELECT * FROM {$table_name} WHERE type = 'php' AND is_active = 1", OBJECT);
+    $all_snippets = $wpdb->get_results("SELECT * FROM {$table_name} WHERE is_active = 1", OBJECT);
 
-    foreach ($php_snippets as $snippet) {
+    foreach ($all_snippets as $snippet) {
         $should_execute = false;
 
-        // Determine where to run the snippet based on display_condition
-        switch ($snippet->display_condition) {
-            case 'everywhere':
-                $should_execute = true;
-                break;
-            case 'only_frontend':
-                if (!is_admin()) { // Check if not in the admin dashboard
+        // Determine where to run the snippet based on display_condition and type
+        switch ($snippet->type) {
+            case 'php':
+                if ($snippet->display_condition === 'everywhere' ||
+                    ($snippet->display_condition === 'only_frontend' && !is_admin()) ||
+                    ($snippet->display_condition === 'only_backend' && is_admin())) {
                     $should_execute = true;
                 }
                 break;
-            case 'only_backend':
-                if (is_admin()) { // Check if in the admin dashboard
+            case 'js':
+                if (($snippet->display_condition === 'header' || $snippet->display_condition === 'body_end') &&
+                    !is_admin()) { // JS and CSS are typically only included on the front end
                     $should_execute = true;
                 }
                 break;
-            // Add more conditions as needed
+            case 'css':
+                if ($snippet->display_condition === 'everywhere' ||
+                    ($snippet->display_condition === 'only_frontend' && !is_admin()) ||
+                    ($snippet->display_condition === 'only_backend' && is_admin())) {
+                    $should_execute = true;
+                }
+                break;
         }
 
         if ($should_execute) {
-            include $snippet->file;
+            switch ($snippet->type) {
+                case 'php':
+                    include $snippet->file; // Execute PHP code
+                    break;
+                case 'js':
+                    // Enqueue JavaScript
+                    add_action('wp_head', function() use ($snippet) {
+                        if ($snippet->display_condition === 'header') {
+                            echo "<script>" . file_get_contents($snippet->file) . "</script>";
+                        }
+                    });
+                    add_action('wp_footer', function() use ($snippet) {
+                        if ($snippet->display_condition === 'body_end') {
+                            echo "<script>" . file_get_contents($snippet->file) . "</script>";
+                        }
+                    });
+                    break;
+                case 'css':
+                    // Enqueue CSS
+                    add_action('wp_head', function() use ($snippet) {
+                        echo "<style>" . file_get_contents($snippet->file) . "</style>";
+                    });
+                    break;
+            }
         }
     }
 }
-add_action('init', 'aveo_execute_custom_php_snippets', 1);
+add_action('init', 'aveo_execute_custom_code_snippets', 1);
+
 
 
 
