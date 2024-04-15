@@ -144,3 +144,11 @@ jQuery(document).ready(function($) {
 });
 
 
+// Function to mark all snippets
+jQuery(document).ready(function($) {
+    $('#select-all-snippets').on('click', function() {
+        $('.snippet-checkbox').prop('checked', $(this).prop('checked'));
+    });
+});
+
+
