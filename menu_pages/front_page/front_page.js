@@ -61,6 +61,7 @@ jQuery(function($) {
 jQuery(function($) {
     $('.import-snippet-button').on('click', function() {
         $('.import-snippet-animate').slideToggle();
+        $(this).toggleClass('active');
     });
 }); 
 
@@ -104,7 +105,42 @@ jQuery(document).ready(function($) {
     $('#import-snippet-file').change(function() {
         updateUIWithFileInfo(this.files); // Update UI
     });
-    
+});
+
+// Function to handle conditional logic for importet snippets
+jQuery(document).ready(function($) {
+
+    console.log('select change event');
+
+    var typeSelect = $('[name="aveo_snippet_type"]');
+    var conditionSelect = $('[name="aveo_snippet_condition"]');
+
+    var optionsForTypes = {
+        php: [
+            { value: "everywhere", text: "Everywhere" },
+            { value: "only_frontend", text: "Only in the Frontend" },
+            { value: "only_backend", text: "Only in the WP backend" }
+        ],
+        css: [
+            { value: "everywhere", text: "Everywhere" },
+            { value: "only_frontend", text: "Only in the Frontend" },
+            { value: "only_backend", text: "Only in the WP backend" }
+        ],
+        js: [
+            { value: "header", text: "In the Header" },
+            { value: "body_end", text: "In the body end" }
+        ]
+    };
+
+    typeSelect.change(function() {
+        var selectedType = $(this).val();
+        var options = optionsForTypes[selectedType] || [];
+
+        conditionSelect.empty(); // Clear existing options
+        $.each(options, function(index, opt) {
+            conditionSelect.append($('<option>').val(opt.value).text(opt.text));
+        });
+    });
 });
 
 

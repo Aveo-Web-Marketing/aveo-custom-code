@@ -77,14 +77,13 @@ function aveo_custom_code_front_page() {
 
     $html_output = '
     <div class="aveo-custom-code-wrap">
-        
-        <h1>Aveo custom code</h1>
 
         <div>
+            <h1>Aveo custom code</h1>
             <p>Create a new code snippet, or manually import one.</p>
             <div class="new-snippet-button-wrap">
-                <a href="' . admin_url('admin.php?page=aveo-custom-code-new-snippet') . '" class="button button-primary">Create</a>
-                <button class="import-snippet-button button button-primary">Import</button>
+                <a href="' . admin_url('admin.php?page=aveo-custom-code-create-snippet') . '" class="create-snippet-button">Create</a>
+                <div class="import-snippet-button">Import</div>
             </div>
         </div>
 
@@ -131,9 +130,9 @@ function aveo_custom_code_front_page() {
 
         <div class="snippet-type-filter-wrap">
             <div data-category="all_snippets" class="all-snippets active">All your snippets</div>
-            <div data-category="php" class="php-snippets">PHP</div>
-            <div data-category="js" class="js-snippets">JavaScript</div>
-            <div data-category="css" class="css-snippets">CSS</div>
+            <div data-category="php" class="php-snippets">PHP <img class="snippet-category-img" src="' . plugins_url('../../img/php.svg', __FILE__) . '"/></div>
+            <div data-category="js" class="js-snippets">JavaScript <img class="snippet-category-img" src="' . plugins_url('../../img/js.svg', __FILE__) . '"/></div>
+            <div data-category="css" class="css-snippets">CSS <img class="snippet-category-img" src="' . plugins_url('../../img/css.svg', __FILE__) . '"/></div>
             <div data-category="premade_snippets" class="premade-snippets">Premade snippets</div>
             <span class="num-of-snippets">' . count($snippets) . ' items</span>
         </div>
