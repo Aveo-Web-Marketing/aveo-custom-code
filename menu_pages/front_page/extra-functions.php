@@ -159,3 +159,53 @@ function aveo_custom_code_create_snippet_file($name, $id, $type, $original_file_
     }
 }
 
+// Ajax function to export a snippet
+function aveo_download_snippet_file() {
+    if (!current_user_can('manage_options')) {
+        wp_send_json_error('You do not have permission to download files.');
+        wp_die();
+    }
+
+    // Fetching ID and type from the AJAX request
+    $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+    $type = isset($_GET['type']) ? sanitize_text_field($_GET['type']) : '';
+
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'aveo_custom_code';
+    $snippet = $wpdb->get_row($wpdb->prepare("SELECT * FROM {$table_name} WHERE id = %d", $id));
+
+    if (!$snippet) {
+        wp_send_json_error('Snippet not found.');
+        wp_die();
+    }
+
+    $file_path = $snippet->file;
+
+    if (!file_exists($file_path)) {
+        wp_send_json_error('File does not exist.');
+        wp_die();
+    }
+
+    // Determining the MIME type based on the type from the database
+    $mime_type = 'text/plain'; // Default MIME type
+    if ($type === 'js') {
+        $mime_type = 'application/javascript';
+    } elseif ($type === 'css') {
+        $mime_type = 'text/css';
+    } elseif ($type === 'php') {
+        $mime_type = 'application/x-httpd-php';
+    }
+
+    // Set headers to force download
+    header('Content-Type: ' . $mime_type);
+    header('Content-Disposition: attachment; filename="' . basename($file_path) . '"');
+    header('Content-Length: ' . filesize($file_path));
+    readfile($file_path);
+
+    wp_die();
+}
+add_action('wp_ajax_aveo_download_snippet_file', 'aveo_download_snippet_file');
+
+
+
+

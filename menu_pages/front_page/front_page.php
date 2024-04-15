@@ -49,7 +49,7 @@ function aveo_custom_code_front_page() {
 
         $table_row_html .= '
             <tr class="aveo-single-snippet" data-snippet_type="'. $snippet->type .'" data-snippet_id="' . $snippet->id . '">
-                <td><input type="checkbox" class="snippet-checkbox" data-snippet_id="' . $snippet->id . '"></td>
+                <td><input type="checkbox" class="snippet-checkbox" data-snippet_id="' . $snippet->id . '" data-snippet_type="'. $snippet->type .'"></td>
                 <td>  
                     <span class="snippet-activate-switch-con">
                         <input id="activation-'. $snippet->id .'" type="checkbox" ' . ($snippet->is_active == 1 ? 'checked' : '') . ' class="snippet-activate-switch" data-snippet_id="' . $snippet->id . '">
@@ -63,7 +63,7 @@ function aveo_custom_code_front_page() {
                     <div class="snippet-actions">
                         <a href="' . $snippet_edit_url . '">Edit</a>
                         <a href="#" class="clone-snippet" data-snippet_id="' . $snippet->id . '">Clone</a>
-                        <a href="#" class="export-snippet" data-snippet_id="' . $snippet->id . '">Export</a>
+                        <a href="#" class="export-snippet" data-id="' . $snippet->id . '" data-type="'. $snippet->type .'">Export</a>
                         <a href="#" class="delete-snippet" data-snippet_id="' . $snippet->id . '">Delete</a>
                     </div>
                 </td>

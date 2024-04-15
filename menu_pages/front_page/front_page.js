@@ -99,6 +99,20 @@ jQuery(function($) {
     });
 });
 
+
+function downloadFile(id, type) {
+    window.location.href = `/wp-admin/admin-ajax.php?action=aveo_download_snippet_file&id=${encodeURIComponent(id)}&type=${encodeURIComponent(type)}`;
+    console.log("Attempting to download file with ID:", id, "and type:", type);
+}
+
+jQuery(function($) {
+    $(document).on('click', '.export-snippet', function() {
+        var id = $(this).data('id');
+        var type = $(this).data('type');
+        downloadFile(id, type);
+    });
+});
+
 // Filter snippets by type
 jQuery(function($) {
     $('.snippet-type-filter-wrap div').on('click', function() {
