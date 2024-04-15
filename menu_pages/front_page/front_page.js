@@ -38,6 +38,40 @@ async function snippet_activation_status_update(snippet_id, activation_status) {
 
 }
 
+jQuery(function($) {
+    $(document).on('click', '.delete-snippet', function() {
+        var id = $(this).data('snippet_id');
+        // Confirmation dialog before deletion
+        if (confirm("Are you sure you want to delete this snippet?")) {
+            snippet_delete(id);
+        } else {
+            return false;
+        }
+    });
+});
+
+// Function to run on ajax call atempt
+async function snippet_delete(snippet_id) {
+    await jQuery.ajax(
+        {
+            url: '/wp-admin/admin-ajax.php',
+            type: 'POST',
+            data: {
+                action: 'aveo_custom_code_delete_snippet',
+                snippet_id: snippet_id
+            },
+            success: function(response) {
+                console.log('success');
+                location.reload();
+            },
+            error: function(response) {
+                console.log('error');
+            }
+        }
+    );
+}
+
+
 // Filter snippets by type
 jQuery(function($) {
     $('.snippet-type-filter-wrap div').on('click', function() {
