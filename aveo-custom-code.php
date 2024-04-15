@@ -36,7 +36,7 @@ function aveo_custom_code_install() {
             is_active BOOLEAN NOT NULL DEFAULT TRUE,
             file varchar(255) NOT NULL,
             display_condition varchar(255) NOT NULL,
-            modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             priority int(11) NOT NULL DEFAULT 10,
             PRIMARY KEY  (id)
         ) {$charset_collate};";
