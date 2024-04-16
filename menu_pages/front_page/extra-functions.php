@@ -60,18 +60,23 @@ function aveo_custom_code_delete_snippet() {
     // Delete the database entry
     $delete_success = $wpdb->delete($table_name, array('id' => $snippet_id));
     if ($delete_success) {
-        // Check if file exists and delete it
+        // If the deletion was successful, check if the corresponding file exists
         if (file_exists($file_path)) {
+            // Attempt to delete the file
             if (unlink($file_path)) {
-                wp_send_json_success('Snippet and file deleted successfully.');
+                // File deleted successfully
+                return array('success' => true, 'message' => 'Snippet and associated file deleted successfully.');
             } else {
-                wp_send_json_error('Failed to delete file, but snippet entry removed from database.');
+                // File could not be deleted
+                return array('success' => false, 'message' => 'Snippet deleted, but the file could not be deleted.');
             }
         } else {
-            wp_send_json_success('File does not exist, but snippet entry removed from database.');
+            // File does not exist
+            return array('success' => true, 'message' => 'Snippet deleted. No file found to delete.');
         }
     } else {
-        wp_send_json_error('Failed to delete snippet from database.');
+        // Database deletion failed
+        return array('success' => false, 'message' => 'Failed to delete snippet from the database.');
     }
 
     wp_die();
@@ -86,6 +91,8 @@ add_action('wp_ajax_nopriv_aveo_custom_code_delete_snippet', 'aveo_custom_code_d
 
 // Ajax function to clone a snippet
 function aveo_custom_code_clone_snippet() {
+
+    ob_start(); // Start buffering output
     // Check user capability
     if (!current_user_can('manage_options')) {
         wp_send_json_error('You do not have permission to clone snippets.');
@@ -116,7 +123,7 @@ function aveo_custom_code_clone_snippet() {
         'is_active' => 0,
         'display_condition' => $snippet->display_condition,
         'description' => $snippet->description,
-        'code' => $snippet->code,
+        'code' => $snippet->code,  // Here the code is treated just as text
     );
 
     // Insert the cloned snippet into the database
@@ -131,12 +138,14 @@ function aveo_custom_code_clone_snippet() {
         }
     }
     
-
+    // if inserted array message
     if ($inserted) {
-        wp_send_json_success('Snippet cloned successfully.');
+        return array('success' => true, 'message' => 'Snippet cloned successfully.');
     } else {
-        wp_send_json_error('Failed to clone snippet.');
+        return array('success' => false, 'message' => 'Failed to clone snippet.');
     }
+
+    ob_clean(); // Discard the contents of the output buffer
 
     wp_die();
 }

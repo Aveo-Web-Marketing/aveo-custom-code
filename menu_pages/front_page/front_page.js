@@ -1,7 +1,4 @@
 // Event listener for the activation / deactivaiton of a snippet
-console.log('Front page JS file  loaded');
-
-
 jQuery(function($) {
     // Correctly attaching the event handler
     $(document).on('click', '.snippet-activate-switch', function() {
@@ -38,9 +35,10 @@ async function snippet_activation_status_update(snippet_id, activation_status) {
 
 }
 
+// Event listener for the deletion of a snippet
 jQuery(function($) {
     $(document).on('click', '.delete-snippet', function() {
-        var id = $(this).data('snippet_id');
+        let id = $(this).data('snippet_id');
         // Confirmation dialog before deletion
         if (confirm("Are you sure you want to delete this snippet?")) {
             snippet_delete(id);
@@ -61,7 +59,7 @@ async function snippet_delete(snippet_id) {
                 snippet_id: snippet_id
             },
             success: function(response) {
-                console.log('success');
+                console.log('success delete');
                 location.reload();
             },
             error: function(response) {
@@ -73,6 +71,14 @@ async function snippet_delete(snippet_id) {
 
 }
 
+// Event listener for the cloning of a snippet
+jQuery(function($) {
+    $(document).on('click', '.clone-snippet', function() {
+        let id = $(this).data('snippet_id');
+        snippet_clone(id);
+    });
+});
+
 // Function to run on ajax call atempt - clone snippet
 async function snippet_clone(snippet_id) {
     await jQuery.ajax({
@@ -82,29 +88,17 @@ async function snippet_clone(snippet_id) {
             action: 'aveo_custom_code_clone_snippet',
             snippet_id: snippet_id
         },
-        success: function(response) {
-            console.log('success');
+        success: function() {
+            console.log('success clone');
             location.reload();
         },
-        error: function(response) {
+        error: function() {
             console.log('error');
         }
     });
 }
 
-jQuery(function($) {
-    $(document).on('click', '.clone-snippet', function() {
-        var id = $(this).data('snippet_id');
-        snippet_clone(id);
-    });
-});
-
-
-function downloadFile(id, type) {
-    window.location.href = `/wp-admin/admin-ajax.php?action=aveo_download_snippet_file&id=${encodeURIComponent(id)}&type=${encodeURIComponent(type)}`;
-    console.log("Attempting to download file with ID:", id, "and type:", type);
-}
-
+// Event listener for the export of a snippet
 jQuery(function($) {
     $(document).on('click', '.export-snippet', function() {
         var id = $(this).data('id');
@@ -113,7 +107,14 @@ jQuery(function($) {
     });
 });
 
-// Filter snippets by type
+// Function to run on ajax call atempt - export snippet
+function downloadFile(id, type) {
+    window.location.href = `/wp-admin/admin-ajax.php?action=aveo_download_snippet_file&id=${encodeURIComponent(id)}&type=${encodeURIComponent(type)}`;
+    console.log("Attempting to download file with ID:", id, "and type:", type);
+}
+
+
+// Function to filter snippets by type
 jQuery(function($) {
     $('.snippet-type-filter-wrap div').on('click', function() {
         let category_id = $(this).data('category');
