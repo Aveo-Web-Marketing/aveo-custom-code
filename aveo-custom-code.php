@@ -13,10 +13,10 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit; 
 }
 
-// Register the the sql table for the plugin on activation
+// Register the activation hook - whichs runs the function for the first time setup
 register_activation_hook( __FILE__, 'aveo_custom_code_install' );
 
-// Function to create the sql table for the plugin, which runs on activation
+// Function to setup the plugin for the first time - including the sql table
 function aveo_custom_code_install() {
     global $wpdb;
     
@@ -48,9 +48,7 @@ function aveo_custom_code_install() {
     }
 }
 
-
-
-// Hook for adding admin menus
+// Action to include the custom code menu - main and submenus below
 add_action('admin_menu', 'aveo_custom_code_menu');
 
 // Adjusted function to include submenu registration
@@ -98,7 +96,7 @@ function aveo_custom_code_menu() {
         );
     }
 
-    // Enqueue script for initializing the CodeMirror editor. This script will only be loaded on the create snippet page. It uses the $create_snippet_hook_suffix variable to check if it should be loaded.
+    // Enqueue script for initializing the CodeMirror editor. This script will only be loaded on the create- and edit snippet page. It uses the $create_snippet_hook_suffix variable to check if it should be loaded.
     add_action('admin_enqueue_scripts', function ($hook) {
         
         global $wpdb;
@@ -199,9 +197,9 @@ function aveo_custom_code_menu() {
 
 }
 
+
 // Include the menu page manager file
 require_once plugin_dir_path(__FILE__) . 'menu_pages/menu_page_manager.php';
-
 
 
 // function for handling the form submission
@@ -314,6 +312,8 @@ function aveo_process_snippet_submission() {
 }
 add_action('admin_init', 'aveo_process_snippet_submission');
 
+
+// Function to execute the custom code snippets
 function aveo_execute_custom_code_snippets() {
     if (!current_user_can('manage_options')) return; // Security check for admin-only execution
 
