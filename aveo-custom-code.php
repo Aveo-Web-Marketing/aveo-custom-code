@@ -153,7 +153,6 @@ function aveo_custom_code_menu() {
                             'autoCloseBrackets' => true,
                             'autoCloseTags' => true,
                             'matchBrackets' => true,
-                            'matchTags' => array('bothTags' => true),
                             'extraKeys'        => array(
                                 'Alt-Space' => 'autocomplete',
                                 'Ctrl-/'     => 'toggleComment',
@@ -215,6 +214,8 @@ function aveo_process_snippet_submission() {
             // Decode entities for the code editor content
             $snippet_code_raw = stripslashes($_POST['aveo_code_editor']);
             $snippet_code = html_entity_decode($snippet_code_raw, ENT_QUOTES | ENT_HTML5);
+
+            $uploaded_file = $_FILES['import-snippet-file'];
 
             $snippet_description = sanitize_textarea_field($_POST['aveo_snippet_description']);
             $is_active = isset($_POST['aveo_snippet_active']) ? 1 : 0;

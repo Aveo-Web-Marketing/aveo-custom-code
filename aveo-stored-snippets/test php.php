@@ -1,2 +1,4 @@
 <?php 
-echo 'heello';
+function myFunc() {
+	echo 'hello';
+}

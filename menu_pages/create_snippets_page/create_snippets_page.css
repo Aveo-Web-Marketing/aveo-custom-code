@@ -25,7 +25,6 @@
     content: "<\?php";
     display: block;
     color: #999;
-    margin-bottom: -15px;
 }
 .code-editor-before .CodeMirror-sizer.hide-before::before {
     display: none;
@@ -54,5 +53,4 @@
 .aveo-custom-code-snippet-info div {
     display: flex;
     flex-direction: column;
-    gap: 5px;
 }

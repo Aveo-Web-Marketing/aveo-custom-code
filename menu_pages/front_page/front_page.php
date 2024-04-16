@@ -91,39 +91,41 @@ function aveo_custom_code_front_page() {
             <div class="import-snippet-wrap">
                 <p>Upload from this device</p>
                 <div class="import-snippet-content">
-                    <div class="import-snippet-file-wrap">
-                        <input type="file" id="import-snippet-file">
-                        <label for="import-snippet-file" id="file-input-label">
-                            <div class="file-input-content">
-                                <span class="file-input-plus">+</span>
-                                <span class="file-input-text">Click or drag file here</span>
+                    <form action="" method="post" id="aveo-custom-code-form" enctype="multipart/form-data">
+                        <div class="import-snippet-file-wrap">
+                            <input type="file" id="import-snippet-file" name="import-snippet-file">
+                            <label for="import-snippet-file" id="file-input-label">
+                                <div class="file-input-content">
+                                    <span class="file-input-plus">+</span>
+                                    <span class="file-input-text">Click or drag file here</span>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="aveo-custom-code-snippet-condition-wrap">
+                            <div>
+                                <label for="Snippet type">Document Type</label>
+                                <select class="aveo_snippet_type" name="aveo_snippet_type">
+                                    <option value="php">PHP</option>
+                                    <option value="css">CSS</option>
+                                    <option value="js">JavaScript</option>
+                                </select>
+                                <span>This should match the code you write</span>
                             </div>
-                        </label>
-                    </div>
-                    <div class="aveo-custom-code-snippet-condition-wrap">
-                        <div>
-                            <label for="Snippet type">Document Type</label>
-                            <select class="aveo_snippet_type" name="aveo_snippet_type">
-                                <option value="php">PHP</option>
-                                <option value="css">CSS</option>
-                                <option value="js">JavaScript</option>
-                            </select>
-                            <span>This should match the code you write</span>
+                            <div>
+                                <label for="Snippet Condition">Where to run code</label>
+                                <select name="aveo_snippet_condition">
+                                    <option value="everywhere">Everywhere</option>
+                                    <option value="only_frontend">Only in the Frontend</option>
+                                    <option value="only_backend">Only in the WP backend</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="Snippet activation">Activate snippet on save</label>
+                                <input type="checkbox" name="aveo_snippet_active" value="1" checked>
+                            </div>
+                            <input type="submit" name="aveo_submit_snippet" value="Save Snippet" class="button button-primary">
                         </div>
-                        <div>
-                            <label for="Snippet Condition">Where to run code</label>
-                            <select name="aveo_snippet_condition">
-                                <option value="everywhere">Everywhere</option>
-                                <option value="only_frontend">Only in the Frontend</option>
-                                <option value="only_backend">Only in the WP backend</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="Snippet activation">Activate snippet on save</label>
-                            <input type="checkbox" name="aveo_snippet_active" value="1" checked>
-                        </div>
-                        <input type="submit" name="aveo_submit_snippet" value="Save Snippet" class="button button-primary">
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
