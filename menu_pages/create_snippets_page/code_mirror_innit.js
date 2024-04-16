@@ -36,14 +36,6 @@ jQuery(document).ready(function($) {
     });
 });
 
-// CodeMirror initialization
-/* jQuery(document).ready(function($) {
-    if (typeof cm_settings !== 'undefined' && cm_settings.codeEditor) {
-        var editor = wp.codeEditor.initialize($('#aveo-code-editor'), cm_settings.codeEditor);
-    }
-    console.log('cm_settings', cm_settings);
-}); */
-
 jQuery(document).ready(function($) {
     var editorInstance; // Hold the editor instance
 
@@ -84,5 +76,16 @@ jQuery(document).ready(function($) {
     });
 });
 
-
+jQuery(function($) {
+    // Listen for changes on the select element with the name 'aveo_snippet_type'
+    $('select[name="aveo_snippet_type"]').change(function() {
+        var selectedValue = $(this).val();
+        // Check if the selected value is 'php'
+        if (selectedValue === 'php') {
+            $('.aveo-custom-code-snippet-info').addClass('code-editor-before');
+        } else {
+            $('.aveo-custom-code-snippet-info').removeClass('code-editor-before');
+        }
+    });
+});
 

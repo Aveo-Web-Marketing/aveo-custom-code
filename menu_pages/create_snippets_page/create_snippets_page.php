@@ -3,8 +3,7 @@
 // Include style and script files
 function aveo_custom_code_enqueue_scripts() {
     // Enqueue the create_snippets_page.css file
-    wp_enqueue_style('aveo-custom-code-create-snippets-page', plugin_dir_url(__FILE__) . 'create_snippets_page.css');
-    
+    wp_enqueue_style('aveo-custom-code-create-snippets-page', plugin_dir_url(__FILE__) . 'create_snippets_page.css'); 
 }
 add_action('admin_enqueue_scripts', 'aveo_custom_code_enqueue_scripts');
 
@@ -25,7 +24,7 @@ function aveo_custom_code_create_snippet_page() {
         <div class="aveo-custom-code-wrap">
             <h1>Create New Snippet</h1>
             <form action="" method="post" id="aveo-custom-code-form">
-                <div class="aveo-custom-code-snippet-info">
+                <div class="aveo-custom-code-snippet-info code-editor-before">
                     <input type="text" name="aveo_snippet_name" placeholder="Snippet Name">
                     <div>
                         <label for="Snippet Description">Description</label>

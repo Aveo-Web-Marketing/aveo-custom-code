@@ -1,4 +1,2 @@
 <?php 
-function mt() {
-	echo 'g';
-}
+echo 'hello world';

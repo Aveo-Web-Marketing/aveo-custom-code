@@ -21,6 +21,15 @@
 .CodeMirror {
     height: 1000px !important;
 }
+.code-editor-before .CodeMirror-sizer::before {
+    content: "<\?php";
+    display: block;
+    color: #999;
+    margin-bottom: -15px;
+}
+.code-editor-before .CodeMirror-sizer.hide-before::before {
+    display: none;
+}
 .aveo-custom-code-wrap form {
     display: flex;
     position: relative;

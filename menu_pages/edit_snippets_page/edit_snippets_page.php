@@ -30,12 +30,17 @@ function aveo_custom_code_edit_snippet_page() {
 
         if ($snippet) {
             // Assign the retrieved values to variables
-            $snippet_name = esc_attr($snippet->name);
-            $snippet_code = esc_textarea($snippet->code); 
+            $snippet_name = esc_attr($snippet->name); 
             $snippet_active = checked($snippet->is_active, 1, false);
             $snippet_description = esc_textarea($snippet->description);
             $snippet_type = esc_attr($snippet->type);
             $snippet_condition = esc_attr($snippet->display_condition);
+            $snippet_code = $snippet->code;
+            if (strpos($snippet_code, '<?php') === 0) {
+                $snippet_code = substr($snippet_code, strlen('<?php'));
+            }
+            $snippet_code = trim($snippet_code);
+            $snippet_code = esc_textarea($snippet_code);
 
             $snippet_type_option = '';
             if ($snippet_type == 'php') {
@@ -114,7 +119,7 @@ function aveo_custom_code_edit_snippet_page() {
         <div class="aveo-custom-code-wrap">
             <h1>Edit snippet</h1>
             <form action="" method="post" id="aveo-custom-code-form">
-                <div class="aveo-custom-code-snippet-info">
+                <div class="aveo-custom-code-snippet-info '. ($snippet_type === 'php' ?'code-editor-before' : '') .'">
                     <input type="hidden" name="snippet_id" value="' . $snippet_id . '">
                     <input type="text" name="aveo_snippet_name" value="' . $snippet_name . '" placeholder="Snippet Name" style="width:100%;">
                     <input type="textarea" name="aveo_snippet_description" value="'. $snippet_description .'" placeholder="Write  the description of you custom code here." style="width:100%;">
@@ -124,7 +129,7 @@ function aveo_custom_code_edit_snippet_page() {
                 <div class="aveo-custom-code-snippet-condition-wrap">
                     <div>
                         <label for="Snippet type">Document Type</label>
-                        <select class="aveo_snippet_type" name="aveo_snippet_type">
+                        <select class="aveo_snippet_type" name="aveo_snippet_type" data-current_type="'. $snippet_type .'">
                             ' . $snippet_type_option . '
                         </select>
                         <span>This should match the code you write</span>
