@@ -6,6 +6,16 @@ jQuery(function($) {
         let activation_status = $(this).is(':checked'); // Getting the checkbox status
         snippet_activation_status_update(id, activation_status);
     });
+
+    // Foreach function for bulk activation
+    $('#activate-selected-snippets').on('click', function() {
+        $('.snippet-checkbox').each(function() {
+            let id = $(this).data('snippet_id');
+            snippet_activation_status_update(id, true);
+            // Check the checkbox
+            $(this).find('.snippet-activate-switch').prop('checked', true);
+        });
+    });
 });
 
 // Function to run on ajax call atempt - activate / deactivate snippet
@@ -116,10 +126,26 @@ function downloadFile(id, type) {
 
 // Function to filter snippets by type
 jQuery(function($) {
+    // Track the currently active category
+    var currentActiveCategory = null;
+
     $('.snippet-type-filter-wrap div').on('click', function() {
         let category_id = $(this).data('category');
+
         // Add active class to the clicked item and remove from siblings
         $(this).addClass('active').siblings().removeClass('active');
+
+        // Only perform certain actions if the category has changed
+        if (currentActiveCategory !== category_id) {
+            currentActiveCategory = category_id;
+
+            // Uncheck the 'select all' checkbox and all snippet checkboxes
+            $('#select-all-snippets').prop('checked', false);
+            $('.snippet-checkbox').prop('checked', false);
+
+            // Slide up any animations
+            $('.snippet-actions-animate').slideUp();
+        }
 
         // Loop through each snippet row
         $('.aveo-single-snippet').each(function() {
@@ -132,6 +158,7 @@ jQuery(function($) {
         });
     });
 });
+
 
 // Function to hide / show the import wrapper. Using jQuery animation
 jQuery(function($) {
@@ -226,5 +253,29 @@ jQuery(document).ready(function($) {
         $('.snippet-checkbox').prop('checked', $(this).prop('checked'));
     });
 });
+
+
+// event listener for bulk actions
+jQuery(document).ready(function($) {
+
+    $('.snippet-checkbox').on('change', function() {
+        showBulkActions();
+    });
+
+    $('#select-all-snippets').on('change', function() {
+        showBulkActions();
+    });
+
+    function showBulkActions() {
+        var checked = $('.snippet-checkbox:checked').length;
+        if (checked > 1) {
+            $('.snippet-actions-animate').slideDown();
+        } else {
+            $('.snippet-actions-animate').slideUp();
+        }
+    }
+});
+
+
 
 

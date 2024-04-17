@@ -52,6 +52,10 @@ function aveo_custom_code_create_snippet_page() {
                         </select>
                     </div>
                     <div>
+                        <label for="aveo_snippet_priority">Snippet Priority</label>
+                        <input type="number" name="aveo_snippet_priority" value="10">
+                    </div>
+                    <div>
                         <label for="Snippet activation">Activate snippet on save</label>
                         <input type="checkbox" name="aveo_snippet_active" value="1" checked>
                     </div>

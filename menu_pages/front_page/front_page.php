@@ -120,6 +120,10 @@ function aveo_custom_code_front_page() {
                                 </select>
                             </div>
                             <div>
+                                <label for="aveo_snippet_priority">Snippet Priority</label>
+                                <input type="number" name="aveo_snippet_priority" value="10">
+                            </div>
+                            <div>
                                 <label for="Snippet activation">Activate snippet on save</label>
                                 <input type="checkbox" name="aveo_snippet_active" value="1" checked>
                             </div>
@@ -131,31 +135,41 @@ function aveo_custom_code_front_page() {
             </div>
         </div>
 
-        <div class="snippet-type-filter-wrap">
-            <div data-category="all_snippets" class="all-snippets active">All your snippets</div>
-            <div data-category="php" class="php-snippets">PHP <img class="snippet-category-img" src="' . plugins_url('../../img/php.svg', __FILE__) . '"/></div>
-            <div data-category="js" class="js-snippets">JavaScript <img class="snippet-category-img" src="' . plugins_url('../../img/js.svg', __FILE__) . '"/></div>
-            <div data-category="css" class="css-snippets">CSS <img class="snippet-category-img" src="' . plugins_url('../../img/css.svg', __FILE__) . '"/></div>
-            <div data-category="premade_snippets" class="premade-snippets">Premade snippets</div>
-            <span class="num-of-snippets">' . count($snippets) . ' items</span>
-        </div>
+        <div class="snippet-list-wrap">
+            <div class="snippet-type-filter-wrap">
+                <div data-category="all_snippets" class="all-snippets active">All your snippets</div>
+                <div data-category="php" class="php-snippets">PHP <img class="snippet-category-img" src="' . plugins_url('../../img/php.svg', __FILE__) . '"/></div>
+                <div data-category="js" class="js-snippets">JavaScript <img class="snippet-category-img" src="' . plugins_url('../../img/js.svg', __FILE__) . '"/></div>
+                <div data-category="css" class="css-snippets">CSS <img class="snippet-category-img" src="' . plugins_url('../../img/css.svg', __FILE__) . '"/></div>
+                <div data-category="premade_snippets" class="premade-snippets">Premade snippets</div>
+                <span class="num-of-snippets">' . count($snippets) . ' items</span>
+            </div>
 
-        <table class="wp-list-table snippet-table">
-            <thead>
-                <tr>
-                    <th><input type="checkbox" id="select-all-snippets"></th>
-                    <th></th>
-                    <th>Name</th>
-                    <th>Type</th>
-                    <th>Description</th>
-                    <th>Modified</th>
-                    <th>Priority</th>
-                </tr>
-            </thead>
-            <tbody>
-                ' . $table_row_html . '
-            </tbody>
-        </table>
+            <div class="snippet-actions-animate">
+                <div class="snippet-actions">
+                    <div class="snippet-action-button" id="activate-selected-snippets">Activate</div>
+                    <div class="snippet-action-button" id="deactivate-selected-snippets">Deactivate</div>
+                    <div class="snippet-action-button" id="delete-selected-snippets">Delete</div>
+                </div>
+            </div>
+
+            <table class="wp-list-table snippet-table">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" id="select-all-snippets"></th>
+                        <th></th>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                        <th>Modified</th>
+                        <th>Priority</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ' . $table_row_html . '
+                </tbody>
+            </table>
+        </div>
     </div>';
 
     echo $html_output;

@@ -35,6 +35,7 @@ function aveo_custom_code_edit_snippet_page() {
             $snippet_description = esc_textarea($snippet->description);
             $snippet_type = esc_attr($snippet->type);
             $snippet_condition = esc_attr($snippet->display_condition);
+            $snippet_priority = esc_attr($snippet->priority);
             $snippet_code = $snippet->code;
             if (strpos($snippet_code, '<?php') === 0) {
                 $snippet_code = substr($snippet_code, strlen('<?php'));
@@ -139,6 +140,10 @@ function aveo_custom_code_edit_snippet_page() {
                         <select name="aveo_snippet_condition">
                             ' . $snippet_condition_option . '
                         </select>
+                    </div>
+                    <div>
+                        <label for="aveo_snippet_priority">Snippet Priority</label>
+                        <input type="number" name="aveo_snippet_priority" value="'. $snippet_priority .'">
                     </div>
                     <div>
                         <label for="Snippet activation">Activate snippet on save</label>

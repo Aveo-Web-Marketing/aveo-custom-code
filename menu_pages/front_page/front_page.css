@@ -218,3 +218,20 @@ input:checked + label .slider:before {
 #import-snippet-file {
     display: none;
 }
+
+/* Snippet list wrapper */
+.snippet-list-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* snippet actions - style */
+.snippet-actions-animate {
+    display: none;
+}
+
+.snippet-actions {
+    display: flex;
+    gap: 10px;
+}
