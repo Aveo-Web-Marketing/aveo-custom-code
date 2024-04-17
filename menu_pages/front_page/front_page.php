@@ -89,7 +89,7 @@ function aveo_custom_code_front_page() {
 
         <div class="import-snippet-animate">
             <div class="import-snippet-wrap">
-                <p>Upload from this device</p>
+                <p>Upload from this device. Only JavaScript, CSS or PHP files will be accepted.</p>
                 <div class="import-snippet-content">
                     <form action="" method="post" id="aveo-custom-code-form" enctype="multipart/form-data">
                         <div class="import-snippet-file-wrap">
@@ -123,6 +123,7 @@ function aveo_custom_code_front_page() {
                                 <label for="Snippet activation">Activate snippet on save</label>
                                 <input type="checkbox" name="aveo_snippet_active" value="1" checked>
                             </div>
+                            <input type="hidden" name="aveo_custom_code_nonce" value="' . wp_create_nonce('aveo_custom_code_action') . '">
                             <input type="submit" name="aveo_submit_snippet" value="Save Snippet" class="button button-primary">
                         </div>
                     </form>

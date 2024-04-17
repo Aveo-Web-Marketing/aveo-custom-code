@@ -206,7 +206,8 @@ function aveo_process_snippet_submission() {
     global $wpdb; // Global WordPress database class
 
     // Check if our form is submitted, nonce is valid, and the user has appropriate capability
-    if (isset($_POST['aveo_submit_snippet'], $_POST['aveo_code_editor'], $_POST['aveo_custom_code_nonce']) && wp_verify_nonce($_POST['aveo_custom_code_nonce'], 'aveo_custom_code_action')) {
+    // $_POST['aveo_code_editor'] - saved for later use
+    if (isset($_POST['aveo_submit_snippet'], $_POST['aveo_custom_code_nonce']) && wp_verify_nonce($_POST['aveo_custom_code_nonce'], 'aveo_custom_code_action')) {
         if (current_user_can('manage_options')) {
             $snippet_id = isset($_POST['snippet_id']) ? intval($_POST['snippet_id']) : 0;
             $snippet_name = sanitize_text_field($_POST['aveo_snippet_name']);
@@ -215,7 +216,14 @@ function aveo_process_snippet_submission() {
             $snippet_code_raw = stripslashes($_POST['aveo_code_editor']);
             $snippet_code = html_entity_decode($snippet_code_raw, ENT_QUOTES | ENT_HTML5);
 
-            $uploaded_file = $_FILES['import-snippet-file'];
+            if (isset($_FILES['import-snippet-file'])) {
+                $uploaded_file = $_FILES['import-snippet-file'];
+                error_log('File Upload Attempt: ' . print_r($uploaded_file, true));
+                
+                if ($uploaded_file['error'] !== UPLOAD_ERR_OK) {
+                    error_log('File Upload Error: ' . $uploaded_file['error']);
+                }
+            }
 
             $snippet_description = sanitize_textarea_field($_POST['aveo_snippet_description']);
             $is_active = isset($_POST['aveo_snippet_active']) ? 1 : 0;
@@ -240,6 +248,29 @@ function aveo_process_snippet_submission() {
                 wp_redirect($redirect_url);
                 echo '<div class="notice notice-error is-dismissible"><p>Snippet name already exists. Please choose a different name.</p></div>';
                 exit;
+            }
+
+            // Check if the code is imported from a file, and if so, use the contet of the file as the snippet code, and the file name as the snippet name
+            if ($uploaded_file['error'] === 0) {
+                $file_name = $uploaded_file['name'];
+                $file_path = $uploaded_file['tmp_name'];
+                $file_extension = pathinfo($file_name, PATHINFO_EXTENSION);
+
+                if ($file_extension === 'php' || $file_extension === 'js' || $file_extension === 'css') {
+                    $snippet_code = file_get_contents($file_path);
+                    $snippet_name = pathinfo($file_name, PATHINFO_FILENAME);
+                    // $document_type = $file_extension; - Can be added if needed
+                } else {
+                    set_transient('aveo_snippet_error_message', 'Invalid file type. Please upload a PHP, JS, or CSS file.', 30); // 30 seconds expiration
+
+                    $redirect_url = add_query_arg([
+                        'page' => 'aveo-custom-code-create-snippet',
+                    ], admin_url('admin.php'));
+
+                    wp_redirect($redirect_url);
+                    echo '<div class="notice notice-error is-dismissible"><p>Invalid file type. Please upload a PHP, JS, or CSS file.</p></div>';
+                    exit;
+                }
             }
 
             $current_file_path = '';
@@ -351,6 +382,7 @@ function aveo_execute_custom_code_snippets() {
 
         if ($should_execute) {
             switch ($snippet->type) {
+                
                 case 'php':
                     include $snippet->file; // Execute PHP code
                     break;
@@ -378,14 +410,3 @@ function aveo_execute_custom_code_snippets() {
     }
 }
 add_action('init', 'aveo_execute_custom_code_snippets', 1);
-
-
-
-
-
-
-
-
-
-
-
