@@ -223,7 +223,7 @@ input:checked + label .slider:before {
 .snippet-list-wrap {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 20px;
 }
 
 /* snippet actions - style */
