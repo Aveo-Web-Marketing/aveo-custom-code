@@ -118,13 +118,16 @@ function aveo_custom_code_edit_snippet_page() {
 
     $html_output = '
         <div class="aveo-custom-code-wrap">
-            <h1>Edit snippet</h1>
+        <h1 class="custom-code-special-heading">Edit Snippet</h1>
             <form action="" method="post" id="aveo-custom-code-form">
                 <div class="aveo-custom-code-snippet-info '. ($snippet_type === 'php' ?'code-editor-before' : '') .'">
-                    <input type="hidden" name="snippet_id" value="' . $snippet_id . '">
-                    <input type="text" name="aveo_snippet_name" value="' . $snippet_name . '" placeholder="Snippet Name" style="width:100%;">
-                    <input type="textarea" name="aveo_snippet_description" value="'. $snippet_description .'" placeholder="Write  the description of you custom code here." style="width:100%;">
-                    <textarea id="aveo-code-editor" name="aveo_code_editor" style="width:100%;">' . $snippet_code . '</textarea>
+                    <input type="hidden" name="aveo_snippet_id" value="' . $snippet_id . '">
+                    <input type="text" name="aveo_snippet_name" value="' . $snippet_name . '" placeholder="Snippet Name">
+                    <div>
+                        <label class="snippet-discription-label" for="Snippet Description">Description</label>
+                        <textarea name="aveo_snippet_description" placeholder="Write  the description of you custom code here.">'. $snippet_description .'</textarea>
+                    </div>
+                    <textarea id="aveo-code-editor" name="aveo_code_editor">' . $snippet_code . '</textarea>
                     ' . wp_nonce_field('aveo_custom_code_action', 'aveo_custom_code_nonce', true, false) . '
                 </div>
                 <div class="aveo-custom-code-snippet-condition-wrap">

@@ -231,7 +231,46 @@ input:checked + label .slider:before {
     display: none;
 }
 
-.snippet-actions {
+.bulk-snippet-actions {
     display: flex;
-    gap: 10px;
+    flex-direction: column;
 }
+
+.bulk-snippet-actions div {
+    border-right: 1px solid #CACACA;
+    padding: 0 10px;
+}
+
+.bulk-snippet-actions span {
+    display: flex;
+}
+
+.bulk-snippet-actions div:last-child {
+    border-right: 0;
+    color: #B12222;
+}
+
+.bulk-snippet-actions div:last-child:hover {
+    color: #3c434a;
+}
+
+.bulk-snippet-actions div:first-child {
+    padding-left: 0;
+}
+
+.bulk-heading {
+    font-weight: bold;
+}
+
+.snippet-action-button {
+    color: #2271B1;
+    cursor: pointer;
+}
+
+.snippet-action-button:hover {
+    color: #3c434a;
+}
+
+
+
+

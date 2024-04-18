@@ -5,15 +5,45 @@ jQuery(function($) {
         let id = $(this).data('snippet_id'); // Correctly getting the ID
         let activation_status = $(this).is(':checked'); // Getting the checkbox status
         snippet_activation_status_update(id, activation_status);
+        // if activation_status is true, set checked to true
+        if (activation_status) {
+            $(this).attr('checked', 'checked');
+        } else {
+            $(this).removeAttr('checked');
+        }
     });
 
-    // Foreach function for bulk activation
-    $('#activate-selected-snippets').on('click', function() {
-        $('.snippet-checkbox').each(function() {
-            let id = $(this).data('snippet_id');
-            snippet_activation_status_update(id, true);
-            // Check the checkbox
-            $(this).find('.snippet-activate-switch').prop('checked', true);
+    // Event listener for the activation of marked snippets
+    jQuery(document).ready(function($) {
+        $('#activate-selected-snippets').on('click', function() {
+            // Get all checked snippet checkboxes
+            $('.snippet-checkbox:checked').each(function() {
+                // Get the snippet ID from the data attribute
+                let snippetId = $(this).data('snippet_id');
+
+                // run the activation function
+                snippet_activation_status_update(snippetId, true);
+    
+                // Find the corresponding activate switch using the snippet ID and set it to checked
+                $('#activation-' + snippetId).prop('checked', true);
+            });
+        });
+    });
+
+    // Event listener for the deactivation of marked snippets
+    jQuery(document).ready(function($) {
+        $('#deactivate-selected-snippets').on('click', function() {
+            // Get all checked snippet checkboxes
+            $('.snippet-checkbox:checked').each(function() {
+                // Get the snippet ID from the data attribute
+                let snippetId = $(this).data('snippet_id');
+
+                // run the activation function
+                snippet_activation_status_update(snippetId, false);
+    
+                // Find the corresponding activate switch using the snippet ID and set it to checked
+                $('#activation-' + snippetId).prop('checked', false);
+            });
         });
     });
 });
@@ -55,6 +85,30 @@ jQuery(function($) {
         } else {
             return false;
         }
+    });
+
+    // Event listener for the deletion of marked snippets
+    jQuery(document).ready(function($) {
+        $('#delete-selected-snippets').on('click', function() {
+            // Get all checked snippet checkboxes
+            var checkedSnippets = $('.snippet-checkbox:checked');
+            
+            // Check if there are any snippets selected
+            if (checkedSnippets.length > 0) {
+                // Confirmation dialog before deletion
+                if (confirm("Are you sure you want to delete the selected snippets?")) {
+                    checkedSnippets.each(function() {
+                        // Get the snippet ID from the data attribute
+                        let snippetId = $(this).data('snippet_id');
+                        snippet_delete(snippetId);
+                    });
+                } else {
+                    return false;
+                }
+            } else {
+                alert("No snippets selected for deletion.");
+            }
+        });
     });
 });
 

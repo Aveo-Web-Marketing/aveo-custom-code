@@ -22,12 +22,12 @@ function aveo_custom_code_create_snippet_page() {
 
     $html_output = '
         <div class="aveo-custom-code-wrap">
-            <h1>Create New Snippet</h1>
+            <h1 class="custom-code-special-heading">Create New Snippet</h1>
             <form action="" method="post" id="aveo-custom-code-form">
                 <div class="aveo-custom-code-snippet-info code-editor-before">
                     <input type="text" name="aveo_snippet_name" placeholder="Snippet Name">
                     <div>
-                        <label for="Snippet Description">Description</label>
+                        <label class="snippet-discription-label" for="Snippet Description">Description</label>
                         <textarea name="aveo_snippet_description" placeholder="Write  the description of you custom code here."></textarea>
                     </div>
                     <textarea id="aveo-code-editor" name="aveo_code_editor"></textarea>

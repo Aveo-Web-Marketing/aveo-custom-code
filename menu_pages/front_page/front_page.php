@@ -146,10 +146,13 @@ function aveo_custom_code_front_page() {
             </div>
 
             <div class="snippet-actions-animate">
-                <div class="snippet-actions">
-                    <div class="snippet-action-button" id="activate-selected-snippets">Activate</div>
-                    <div class="snippet-action-button" id="deactivate-selected-snippets">Deactivate</div>
-                    <div class="snippet-action-button" id="delete-selected-snippets">Delete</div>
+                <div class="bulk-snippet-actions">
+                    <span class="bulk-heading">Bulk Actions:</span>
+                    <span>
+                        <div class="snippet-action-button" id="activate-selected-snippets">Activate</div>
+                        <div class="snippet-action-button" id="deactivate-selected-snippets">Deactivate</div>
+                        <div class="snippet-action-button" id="delete-selected-snippets">Delete</div>
+                    </span>
                 </div>
             </div>
 
@@ -166,7 +169,7 @@ function aveo_custom_code_front_page() {
                     </tr>
                 </thead>
                 <tbody>
-                    ' . $table_row_html . '
+                ' . (!empty($table_row_html) ? $table_row_html : '<tr><td colspan="7">No snippets created</td></tr>') . '
                 </tbody>
             </table>
         </div>

@@ -10,6 +10,9 @@
     top: 45px;
     padding: 20px 10px;
 }
+.custom-code-special-heading {
+    margin-bottom: -20px;
+}
 .aveo-custom-code-snippet-condition-wrap div {
     display: flex;
     flex-direction: column;
@@ -53,4 +56,7 @@
 .aveo-custom-code-snippet-info div {
     display: flex;
     flex-direction: column;
+}
+.snippet-discription-label {
+    padding: 5px 0;
 }
