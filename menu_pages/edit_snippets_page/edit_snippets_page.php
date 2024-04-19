@@ -49,6 +49,10 @@ function aveo_custom_code_edit_snippet_page() {
             $posts = $wpdb->get_results("SELECT ID, post_title FROM $wpdb->posts WHERE post_type = 'post' AND post_status = 'publish'");
             $all_pages = array_merge($pages, $posts);
 
+            $aveo_page_search_results = '';
+            foreach ($all_pages as $page) {
+                $aveo_page_search_results .= '<div class="aveo-page-search-result" data-page_id="' . $page->ID . '">' . $page->post_title . '</div>';
+            }
 
             $snippet_type_option = '';
             if ($snippet_type == 'php') {
@@ -151,13 +155,20 @@ function aveo_custom_code_edit_snippet_page() {
                             ' . $snippet_condition_option . '
                         </select>
                     </div>
-                    ' . ($snippet_type === 'js' || $snippet_type === 'css' ? '<div>
+                    <div style="' . ($snippet_type === 'php' ? 'display: none;' : '') . '">
                         <label for="Snippet page specific condition">Page Specific Condition</label>
                         <select name="aveo_snippet_page_specific_condition">
                             <option value="all">All Pages</option>
                             <option value="specific">Specific Pages</option>
                         </select>
-                    </div>' : '') . '
+                        <div style"' . ($snippet_page_specific_condition? '' : 'display: none;') . '">
+                            <label for="Snippet page specific condition">Search for Page(s)</label>
+                            <input type="text" name="aveo_snippet_page_specific_condition_search" value="' .    $snippet_page_specific_condition . '">
+                            <div class="aveo-page-search-results">
+                                ' . $aveo_page_search_results . '
+                            </div>
+                        </div>
+                    </div>
                     <div>
                         <label for="aveo_snippet_priority">Snippet Priority</label>
                         <input type="number" name="aveo_snippet_priority" value="'. $snippet_priority .'">

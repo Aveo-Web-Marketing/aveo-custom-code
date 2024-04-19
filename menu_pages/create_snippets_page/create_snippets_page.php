@@ -51,6 +51,13 @@ function aveo_custom_code_create_snippet_page() {
                             <option value="only_backend">Only in the WP backend</option>
                         </select>
                     </div>
+                    <div style="display: none;">
+                        <label for="Snippet page specific condition">Page Specific Condition</label>
+                        <select name="aveo_snippet_page_specific_condition">
+                            <option value="all">All Pages</option>
+                            <option value="specific">Specific Pages</option>
+                        </select>
+                    </div>
                     <div>
                         <label for="aveo_snippet_priority">Snippet Priority</label>
                         <input type="number" name="aveo_snippet_priority" value="10">
