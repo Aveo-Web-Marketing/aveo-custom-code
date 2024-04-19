@@ -36,6 +36,7 @@ function aveo_custom_code_install() {
             is_active BOOLEAN NOT NULL DEFAULT TRUE,
             file varchar(255) NOT NULL,
             display_condition varchar(255) NOT NULL,
+            specific_page_condition JSON NOT NULL,
             modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             priority int(11) NOT NULL DEFAULT 10,
             PRIMARY KEY  (id)
@@ -237,6 +238,7 @@ function aveo_process_snippet_submission() {
             $query = $wpdb->prepare("SELECT id FROM {$wpdb->prefix}aveo_custom_code WHERE name = %s AND id != %d", $snippet_name, $snippet_id);
             $existing_id = $wpdb->get_var($query);
 
+            // HERE THERE SHOULD BE A CONDITION TO CHECK IF THE SNIPPET IS BEING EDITED OR CREATED. IF EDITED, IT SHOULD NOT CHECK FOR EXISTING ID AND EXIT; BEUCAUSE THE SNIPPET NAME WILL BE THE SAME AS THE CURRENT SNIPPET NAME.
             if ($existing_id) {
                 
                 set_transient('aveo_snippet_error_message', 'Snippet name already exists. Please choose a different name.', 30); // 30 seconds 

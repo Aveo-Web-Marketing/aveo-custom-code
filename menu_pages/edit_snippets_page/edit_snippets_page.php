@@ -36,12 +36,19 @@ function aveo_custom_code_edit_snippet_page() {
             $snippet_type = esc_attr($snippet->type);
             $snippet_condition = esc_attr($snippet->display_condition);
             $snippet_priority = esc_attr($snippet->priority);
+            $snippet_page_specific_condition = esc_attr($snippet->specific_page_condition);
             $snippet_code = $snippet->code;
             if (strpos($snippet_code, '<?php') === 0) {
                 $snippet_code = substr($snippet_code, strlen('<?php'));
             }
             $snippet_code = trim($snippet_code);
             $snippet_code = esc_textarea($snippet_code);
+
+            // query to get the id of all pages and posts
+            $pages = $wpdb->get_results("SELECT ID, post_title FROM $wpdb->posts WHERE post_type = 'page' AND post_status = 'publish'");
+            $posts = $wpdb->get_results("SELECT ID, post_title FROM $wpdb->posts WHERE post_type = 'post' AND post_status = 'publish'");
+            $all_pages = array_merge($pages, $posts);
+
 
             $snippet_type_option = '';
             if ($snippet_type == 'php') {
@@ -144,6 +151,13 @@ function aveo_custom_code_edit_snippet_page() {
                             ' . $snippet_condition_option . '
                         </select>
                     </div>
+                    ' . ($snippet_type === 'js' || $snippet_type === 'css' ? '<div>
+                        <label for="Snippet page specific condition">Page Specific Condition</label>
+                        <select name="aveo_snippet_page_specific_condition">
+                            <option value="all">All Pages</option>
+                            <option value="specific">Specific Pages</option>
+                        </select>
+                    </div>' : '') . '
                     <div>
                         <label for="aveo_snippet_priority">Snippet Priority</label>
                         <input type="number" name="aveo_snippet_priority" value="'. $snippet_priority .'">
