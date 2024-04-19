@@ -121,7 +121,7 @@ function aveo_custom_code_edit_snippet_page() {
         <h1 class="custom-code-special-heading">Edit Snippet</h1>
             <form action="" method="post" id="aveo-custom-code-form">
                 <div class="aveo-custom-code-snippet-info '. ($snippet_type === 'php' ?'code-editor-before' : '') .'">
-                    <input type="hidden" name="aveo_snippet_id" value="' . $snippet_id . '">
+                    <input type="hidden" name="snippet_id" value="' . $snippet_id . '">
                     <input type="text" name="aveo_snippet_name" value="' . $snippet_name . '" placeholder="Snippet Name">
                     <div>
                         <label class="snippet-discription-label" for="Snippet Description">Description</label>
