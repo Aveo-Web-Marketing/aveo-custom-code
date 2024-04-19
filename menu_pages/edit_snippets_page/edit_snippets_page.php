@@ -161,7 +161,7 @@ function aveo_custom_code_edit_snippet_page() {
                             <option value="all">All Pages</option>
                             <option value="specific">Specific Pages</option>
                         </select>
-                        <div style"' . ($snippet_page_specific_condition? '' : 'display: none;') . '">
+                        <div style="' . ($snippet_page_specific_condition === 0 ? '' : 'display: none;') . '">
                             <label for="Snippet page specific condition">Search for Page(s)</label>
                             <input type="text" name="aveo_snippet_page_specific_condition_search" value="' .    $snippet_page_specific_condition . '">
                             <div class="aveo-page-search-results">
@@ -180,7 +180,6 @@ function aveo_custom_code_edit_snippet_page() {
                     <input type="submit" name="aveo_submit_snippet" value="Save Snippet" class="button button-primary">
                 </div>
             </form>
-            
         </div>
     ';
 
