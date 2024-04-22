@@ -47,6 +47,7 @@
     width: 100%;
 }
 .aveo-custom-code-snippet-info textarea {
+    height: 80px;
     width: 100%;
 }
 .aveo-custom-code-snippet-info label {

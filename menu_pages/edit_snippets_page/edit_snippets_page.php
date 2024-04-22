@@ -61,7 +61,7 @@ function aveo_custom_code_edit_snippet_page() {
             }
 
             $snippet_page_specific_condition_option = '';
-            if (!isset($snippet_page_specific_condition)) {
+            if ($snippet_page_specific_condition === '-1') {
                 $snippet_page_specific_condition_option = '
                     <option value="all">All Pages</option>
                     <option value="specific">Specific Pages</option>
@@ -179,7 +179,7 @@ function aveo_custom_code_edit_snippet_page() {
                         <select name="aveo_snippet_page_specific_condition">
                             ' . $snippet_page_specific_condition_option . '
                         </select>
-                        <div class="snippet_page_specific_condition_search" style="' . (!isset($snippet_page_specific_condition) ? 'display: none;' : '') . '">
+                        <div class="snippet_page_specific_condition_search" style="' . ($snippet_page_specific_condition === '-1' ? 'display: none;' : '') . '">
                             <label for="Snippet page specific condition">Search for Page(s)</label>
                             <input class="snippet_page_specific_condition_search_input" type="text" name="aveo_snippet_page_specific_condition_search" placeholder="Search for pages" value="' .  $snippet_page_specific_condition_text . '">
                             <input type="hidden" name="selected_con_id" id="selected_con_id" value="'. $snippet_page_specific_condition .'">

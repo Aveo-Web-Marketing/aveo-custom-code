@@ -72,7 +72,7 @@ function aveo_custom_code_create_snippet_page() {
                         <div class="snippet_page_specific_condition_search" style="display: none;">
                             <label for="Snippet_page_specific_condition_search">Search for Page(s)</label>
                             <input class="snippet_page_specific_condition_search_input" type="text" name="aveo_snippet_page_specific_condition_search" placeholder="Search for pages">
-                            <input type="hidden" name="selected_con_id" id="selected_con_id">
+                            <input type="hidden" name="selected_con_id" id="selected_con_id" value="-1">
                             <div class="aveo-page-search-results">
                                 ' . $aveo_page_search_results . '
                             </div>

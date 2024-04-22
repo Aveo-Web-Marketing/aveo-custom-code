@@ -233,7 +233,7 @@ function aveo_process_snippet_submission() {
             $display_condition = isset($_POST['aveo_snippet_condition']) ? $_POST['aveo_snippet_condition'] : null;
             $modified = current_time('mysql');
             $priority = isset($_POST['aveo_snippet_priority']) ? intval($_POST['aveo_snippet_priority']) : 10;
-            $specific_page_condition = isset($_POST['selected_con_id']) ? $_POST['selected_con_id'] : 0;
+            $specific_page_condition = (int) $_POST['selected_con_id'];
 
             // Check if snippet name already exists in the database (exclude current snippet if updating)
             $query = $wpdb->prepare("SELECT id FROM {$wpdb->prefix}aveo_custom_code WHERE name = %s AND id != %d", $snippet_name, $snippet_id);
@@ -320,6 +320,7 @@ function aveo_process_snippet_submission() {
                 'display_condition' => $display_condition,
                 'modified' => $modified,
                 'priority' => $priority,
+                'specific_page_condition' => $specific_page_condition
             ];
 
             $data['file'] = $new_file_path;
@@ -375,9 +376,7 @@ function aveo_execute_custom_code_snippets() {
                 }
                 break;
             case 'css':
-                if ($snippet->display_condition === 'everywhere' ||
-                    ($snippet->display_condition === 'only_frontend' && !is_admin()) ||
-                    ($snippet->display_condition === 'only_backend' && is_admin())) {
+                if (!is_admin()) { // JS and CSS are typically only included on the front end
                     $should_execute = true;
                 }
                 break;

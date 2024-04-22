@@ -98,6 +98,14 @@ jQuery(function($) {
         // Check if the selected value is 'specific'
         if (selectedValue === 'specific') {
             $('.snippet_page_specific_condition_search').show();
+        } else {
+            $('.snippet_page_specific_condition_search').hide();
+
+            // Clear the search input value
+            $('.snippet_page_specific_condition_search_input').val('');
+
+            // Clear the selected page ID
+            $('#selected_con_id').val('-1');
         }
     });
 });
