@@ -5,7 +5,7 @@
     background-color: #fff;
     gap: 20px;
     width: 20%;
-    height: 350px;
+    height: 100%;
     position: sticky;
     top: 45px;
     padding: 20px 10px;
@@ -59,4 +59,8 @@
 }
 .snippet-discription-label {
     padding: 5px 0;
+}
+.aveo-page-search-results {
+    background-color: #fff;
+    padding: 5px;
 }

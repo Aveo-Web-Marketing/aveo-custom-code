@@ -33,6 +33,7 @@ jQuery(document).ready(function($) {
         $.each(options, function(index, opt) {
             conditionSelect.append($('<option>').val(opt.value).text(opt.text));
         });
+
     });
 });
 
@@ -85,7 +86,78 @@ jQuery(function($) {
             $('.aveo-custom-code-snippet-info').addClass('code-editor-before');
         } else {
             $('.aveo-custom-code-snippet-info').removeClass('code-editor-before');
+            $('.snippet_page_specific_condition').show();
         }
     });
 });
+
+jQuery(function($) {
+    // Listen for changes on the select element with the name 'aveo_snippet_page_specific_condition'
+    $('select[name="aveo_snippet_page_specific_condition"]').change(function() {
+        var selectedValue = $(this).val();
+        // Check if the selected value is 'specific'
+        if (selectedValue === 'specific') {
+            $('.snippet_page_specific_condition_search').show();
+        }
+    });
+});
+
+
+// Function to create search functionality for specific page condition
+jQuery(function($) {
+    // Function to show or hide pages based on search criteria
+    function filterPages() {
+        var searchText = $('.snippet_page_specific_condition_search_input').val().toLowerCase();
+        $('.aveo-page-search-result').hide();
+        $('.empty-text').hide();
+
+        // Exit the function early if the input is empty
+        if (searchText === '') {
+            return;
+        }
+
+        // Loop through all page results
+        let count = false;
+        $('.aveo-page-search-result').each(function() {
+            var title = $(this).text().toLowerCase();
+
+            // Check if the search text matches the title
+            if (title.includes(searchText)) {
+                count = true;
+                $(this).show(); // Show the div if the search text is contained in the title
+            }
+        });
+
+        // If no pages are found, show the 'No pages found' message
+        if (!count) {
+            $('.empty-text').show();
+        }
+    }
+
+    // Event listener for the search input
+    $('.snippet_page_specific_condition_search_input').on('input', filterPages);
+
+    // Event listener for clicking on a page result
+    $('.aveo-page-search-results').on('click', '.aveo-page-search-result', function() {
+        var pageId = $(this).data('page_id');
+        var title = $(this).text();
+
+        $('.snippet_page_specific_condition_search_input')
+            .val(title) // Set the input value to the text of the clicked page
+            .data('selected_con_id', pageId); // Set a data attribute with the page ID
+
+        // Also update the hidden input's value
+        $('#selected_con_id').val(pageId);
+
+        // Console log to verify the data attribute
+        console.log('#selected_con_id', $('#selected_con_id').val());
+
+        // Set display none to the search result, to hide all pages again
+        $('.aveo-page-search-result').hide();
+    });
+});
+
+
+
+
 

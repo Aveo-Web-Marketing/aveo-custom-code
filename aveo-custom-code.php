@@ -233,6 +233,7 @@ function aveo_process_snippet_submission() {
             $display_condition = isset($_POST['aveo_snippet_condition']) ? $_POST['aveo_snippet_condition'] : null;
             $modified = current_time('mysql');
             $priority = isset($_POST['aveo_snippet_priority']) ? intval($_POST['aveo_snippet_priority']) : 10;
+            $specific_page_condition = isset($_POST['selected_con_id']) ? $_POST['selected_con_id'] : 0;
 
             // Check if snippet name already exists in the database (exclude current snippet if updating)
             $query = $wpdb->prepare("SELECT id FROM {$wpdb->prefix}aveo_custom_code WHERE name = %s AND id != %d", $snippet_name, $snippet_id);
@@ -318,7 +319,7 @@ function aveo_process_snippet_submission() {
                 'description' => $snippet_description,
                 'display_condition' => $display_condition,
                 'modified' => $modified,
-                'priority' => $priority
+                'priority' => $priority,
             ];
 
             $data['file'] = $new_file_path;

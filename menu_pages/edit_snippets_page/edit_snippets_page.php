@@ -51,7 +51,26 @@ function aveo_custom_code_edit_snippet_page() {
 
             $aveo_page_search_results = '';
             foreach ($all_pages as $page) {
-                $aveo_page_search_results .= '<div class="aveo-page-search-result" data-page_id="' . $page->ID . '">' . $page->post_title . '</div>';
+                $aveo_page_search_results .= '<div style="display: none;" class="aveo-page-search-result" data-page_id="' . $page->ID . '">' . $page->post_title . '</div>';
+            }
+
+            $snippet_page_specific_condition_text = '';
+            if (isset($snippet_page_specific_condition)) {
+                // match the id from the $snippet_page_specific_condition with the id of the page
+                $snippet_page_specific_condition_text = get_the_title($snippet_page_specific_condition);
+            }
+
+            $snippet_page_specific_condition_option = '';
+            if (!isset($snippet_page_specific_condition)) {
+                $snippet_page_specific_condition_option = '
+                    <option value="all">All Pages</option>
+                    <option value="specific">Specific Pages</option>
+                ';
+            } else {
+                $snippet_page_specific_condition_option = '
+                    <option value="specific">Specific Pages</option>
+                    <option value="all">All Pages</option>
+                ';
             }
 
             $snippet_type_option = '';
@@ -155,18 +174,19 @@ function aveo_custom_code_edit_snippet_page() {
                             ' . $snippet_condition_option . '
                         </select>
                     </div>
-                    <div style="' . ($snippet_type === 'php' ? 'display: none;' : '') . '">
+                    <div class="snippet_page_specific_condition" style="' . ($snippet_type === 'php' ? 'display: none;' : '') . '">
                         <label for="Snippet page specific condition">Page Specific Condition</label>
                         <select name="aveo_snippet_page_specific_condition">
-                            <option value="all">All Pages</option>
-                            <option value="specific">Specific Pages</option>
+                            ' . $snippet_page_specific_condition_option . '
                         </select>
-                        <div style="' . ($snippet_page_specific_condition === 0 ? '' : 'display: none;') . '">
+                        <div class="snippet_page_specific_condition_search" style="' . (!isset($snippet_page_specific_condition) ? 'display: none;' : '') . '">
                             <label for="Snippet page specific condition">Search for Page(s)</label>
-                            <input type="text" name="aveo_snippet_page_specific_condition_search" value="' .    $snippet_page_specific_condition . '">
+                            <input class="snippet_page_specific_condition_search_input" type="text" name="aveo_snippet_page_specific_condition_search" placeholder="Search for pages" value="' .  $snippet_page_specific_condition_text . '">
+                            <input type="hidden" name="selected_con_id" id="selected_con_id" value="'. $snippet_page_specific_condition .'">
                             <div class="aveo-page-search-results">
                                 ' . $aveo_page_search_results . '
                             </div>
+                            <div class="empty-text" style="display: none;">No pages found.</div>
                         </div>
                     </div>
                     <div>
