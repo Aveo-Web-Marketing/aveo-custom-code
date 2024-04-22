@@ -113,23 +113,15 @@ function aveo_custom_code_edit_snippet_page() {
                     <option value="everywhere">Everywhere</option>
                     <option value="only_frontend">Only in the Frontend</option>
                 ';
-            } elseif ($snippet_type == 'css' && $snippet_condition == 'everywhere') {
+            } elseif ($snippet_type == 'css' && $snippet_condition == 'header') {
                 $snippet_condition_option = '
-                    <option value="everywhere">Everywhere</option>
-                    <option value="only_frontend">Only in the Frontend</option>
-                    <option value="only_backend">Only in the WP backend</option>
+                    <option value="header">In the header</option>
+                    <option value="body_end">In the body-end</option>
                 ';
-            } elseif ($snippet_type == 'css' && $snippet_condition == 'only_frontend') {
+            } elseif ($snippet_type == 'css' && $snippet_condition == 'body_end') {
                 $snippet_condition_option = '
-                    <option value="only_frontend">Only in the Frontend</option>
-                    <option value="everywhere">Everywhere</option>
-                    <option value="only_backend">Only in the WP backend</option>
-                ';
-            } elseif ($snippet_type == 'css' && $snippet_condition == 'only_backend') {
-                $snippet_condition_option = '
-                    <option value="only_backend">Only in the WP backend</option>
-                    <option value="everywhere">Everywhere</option>
-                    <option value="only_frontend">Only in the Frontend</option>
+                    <option value="body_end">In the body-end</option>
+                    <option value="header">In the header</option>
                 ';
             } elseif ($snippet_type == 'js' && $snippet_condition == 'header') {
                 $snippet_condition_option = '

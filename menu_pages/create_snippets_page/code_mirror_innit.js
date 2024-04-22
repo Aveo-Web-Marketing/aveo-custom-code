@@ -15,9 +15,8 @@ jQuery(document).ready(function($) {
             { value: "only_backend", text: "Only in the WP backend" }
         ],
         css: [
-            { value: "everywhere", text: "Everywhere" },
-            { value: "only_frontend", text: "Only in the Frontend" },
-            { value: "only_backend", text: "Only in the WP backend" }
+            { value: "header", text: "In the Header" },
+            { value: "body_end", text: "In the body end" }
         ],
         js: [
             { value: "header", text: "In the Header" },

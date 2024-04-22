@@ -47,6 +47,24 @@ function aveo_custom_code_front_page() {
             $days_since_modified = $days_since_modified . ' days ago';
         }
 
+        // Display condition
+        $snippet_display_condition = '';
+        if ($snippet->specific_page_condition === '-1' && $snippet->display_condition === 'everywhere') {
+            $snippet_display_condition = 'Everywhere';
+        } else if ($snippet->specific_page_condition === '-1' && $snippet->display_condition === 'only_frontend') {
+            $snippet_display_condition = 'Only in the Frontend';
+        } else if ($snippet->specific_page_condition === '-1' && $snippet->display_condition === 'only_backend') {
+            $snippet_display_condition = 'Only in the WP backend';
+        } else if ($snippet->specific_page_condition !== '-1' && $snippet->display_condition === 'header') {
+            $snippet_display_condition = 'Header' . ' - ' . get_the_title($snippet->specific_page_condition);
+        } else if ($snippet->specific_page_condition !== '-1' && $snippet->display_condition === 'body_end') {
+        $snippet_display_condition = 'Body End' . ' - ' . get_the_title($snippet->specific_page_condition);
+        } else if ($snippet->specific_page_condition === '-1' && $snippet->display_condition === 'header') {
+            $snippet_display_condition = 'Header' . ' - ' . 'All pages';
+        } else if ($snippet->specific_page_condition === '-1' && $snippet->display_condition === 'body_end') {
+            $snippet_display_condition = 'Body End' . ' - ' . 'All pages';
+        }
+
         $table_row_html .= '
             <tr class="aveo-single-snippet" data-snippet_type="'. $snippet->type .'" data-snippet_id="' . $snippet->id . '">
                 <td><input type="checkbox" class="snippet-checkbox" data-snippet_id="' . $snippet->id . '" data-snippet_type="'. $snippet->type .'"></td>
@@ -69,6 +87,7 @@ function aveo_custom_code_front_page() {
                 </td>
                 <td>' . $snippet->type . '</td>
                 <td>' . $snippet->description . '</td>
+                <td>' . $snippet_display_condition . '</td>
                 <td>' . $days_since_modified . '</td>
                 <td>' . $snippet->priority . '</td>
             </tr>
@@ -164,6 +183,7 @@ function aveo_custom_code_front_page() {
                         <th>Name</th>
                         <th>Type</th>
                         <th>Description</th>
+                        <th>Execution Condition</th>
                         <th>Modified</th>
                         <th>Priority</th>
                     </tr>

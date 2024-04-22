@@ -359,8 +359,9 @@ function aveo_execute_custom_code_snippets() {
 
     foreach ($all_snippets as $snippet) {
         $should_execute = false;
+        $current_page_id = get_the_ID(); // Get the current page or post ID
 
-        // Determine where to run the snippet based on display_condition and type
+        // Determine where to run the snippet based on display_condition, type, and specific page condition
         switch ($snippet->type) {
             case 'php':
                 if ($snippet->display_condition === 'everywhere' ||
@@ -370,26 +371,24 @@ function aveo_execute_custom_code_snippets() {
                 }
                 break;
             case 'js':
-                if (($snippet->display_condition === 'header' || $snippet->display_condition === 'body_end') &&
-                    !is_admin()) { // JS and CSS are typically only included on the front end
-                    $should_execute = true;
-                }
-                break;
             case 'css':
                 if (!is_admin()) { // JS and CSS are typically only included on the front end
-                    $should_execute = true;
+                    // Check specific page condition
+                    if ($snippet->specific_page_condition === '-1' || // Execute on all frontend pages
+                        (int)$snippet->specific_page_condition == $current_page_id) { // Execute only on the specific page
+                        $should_execute = true;
+                    }
                 }
                 break;
         }
 
         if ($should_execute) {
             switch ($snippet->type) {
-                
                 case 'php':
                     include $snippet->file; // Execute PHP code
                     break;
                 case 'js':
-                    // Enqueue JavaScript
+                    // Enqueue JavaScript based on display_condition
                     add_action('wp_head', function() use ($snippet) {
                         if ($snippet->display_condition === 'header') {
                             echo "<script>" . file_get_contents($snippet->file) . "</script>";
@@ -411,4 +410,5 @@ function aveo_execute_custom_code_snippets() {
         }
     }
 }
-add_action('init', 'aveo_execute_custom_code_snippets', 1);
+add_action('template_redirect', 'aveo_execute_custom_code_snippets', 1);
+
