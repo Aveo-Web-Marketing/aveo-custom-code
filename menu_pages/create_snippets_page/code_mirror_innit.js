@@ -165,6 +165,19 @@ jQuery(function($) {
 });
 
 
+// Function to toggle the activation switch
+jQuery(function($) {
+    $(document).on('click', '.snippet-activate-switch', function() {
+        let activation_status = $(this).is(':checked'); // Getting the checkbox status
+        // if activation_status is true, set checked to true
+        if (activation_status) {
+            $(this).attr('checked', 'checked');
+        } else {
+            $(this).removeAttr('checked');
+        }
+    });
+});
+
 
 
 

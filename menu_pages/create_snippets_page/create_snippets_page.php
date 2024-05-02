@@ -85,7 +85,12 @@ function aveo_custom_code_create_snippet_page() {
                     </div>
                     <div>
                         <label for="Snippet activation">Activate snippet on save</label>
-                        <input type="checkbox" name="aveo_snippet_active" value="1" checked>
+                        <span class="snippet-activate-switch-con">
+                            <input type="checkbox" id="snippet-activation-input" name="aveo_snippet_active" value="1" checked class="snippet-activate-switch">
+                            <label class="switch" for="snippet-activation-input">
+                                <span class="slider round"></span>
+                            </label>
+                        </span>
                     </div>
                     <input type="submit" name="aveo_submit_snippet" value="Save Snippet" class="button button-primary">
                 </div>
