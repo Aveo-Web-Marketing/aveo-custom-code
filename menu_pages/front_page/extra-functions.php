@@ -29,9 +29,6 @@ function aveo_custom_code_activate_snippet() {
 // Add the ajax action
 add_action('wp_ajax_aveo_custom_code_activate_snippet', 'aveo_custom_code_activate_snippet');
 
-// nopriv
-add_action('wp_ajax_nopriv_aveo_custom_code_activate_snippet', 'aveo_custom_code_activate_snippet');
-
 
 
 // Ajax function to delete a snippet
@@ -84,9 +81,6 @@ function aveo_custom_code_delete_snippet() {
 
 // Add the ajax action
 add_action('wp_ajax_aveo_custom_code_delete_snippet', 'aveo_custom_code_delete_snippet');
-
-// nopriv
-add_action('wp_ajax_nopriv_aveo_custom_code_delete_snippet', 'aveo_custom_code_delete_snippet');
 
 
 // Ajax function to clone a snippet
@@ -153,8 +147,6 @@ function aveo_custom_code_clone_snippet() {
 // Add the ajax action
 add_action('wp_ajax_aveo_custom_code_clone_snippet', 'aveo_custom_code_clone_snippet');
 
-// nopriv
-add_action('wp_ajax_nopriv_aveo_custom_code_clone_snippet', 'aveo_custom_code_clone_snippet');
 
 // Function to create a new file for a snippet
 function aveo_custom_code_create_snippet_file($name, $id, $type, $original_file_path) {
