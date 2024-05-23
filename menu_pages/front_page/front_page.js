@@ -72,7 +72,6 @@ async function snippet_activation_status_update(snippet_id, activation_status) {
             }
         }
     );
-
 }
 
 // Event listener for the deletion of a snippet
