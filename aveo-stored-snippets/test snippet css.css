@@ -1,0 +1,12 @@
+.test-php {
+	color: green; 
+}
+.shortcode-wrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	align-items: center;
+}
+#test-btn {
+	width: 100px;
+}
