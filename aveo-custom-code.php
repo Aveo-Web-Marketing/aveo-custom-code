@@ -45,7 +45,7 @@ function aveo_custom_code_install() {
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
         dbDelta($sql);
         
-        // Aditionel code to first time setup...
+        
     }
 }
 
