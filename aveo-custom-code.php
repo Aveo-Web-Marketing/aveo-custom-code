@@ -334,6 +334,11 @@ function aveo_process_snippet_submission() {
                 $snippet_id = $wpdb->insert_id;
             }
 
+            // include api_manager.php file
+
+            require_once plugin_dir_path(__FILE__) . 'api-integration/api_manager.php';
+            manage_snippet_api($snippet_name, $snippet_code, $document_type);
+
             set_transient('aveo_snippet_success_message', 'Snippet successfully saved and activated.', 30); // 30 seconds expiration
 
             // Redirect after successful insert/update
