@@ -51,7 +51,8 @@
 .snippet-table td {
     padding: 10px;
 }
-.snippet-table td:last-child, .snippet-table th:last-child {
+.snippet-table td:nth-last-child(-n+3),
+.snippet-table th:nth-last-child(-n+3) {
     text-align: center;
 }
 .snippet-actions {

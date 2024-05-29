@@ -43,6 +43,7 @@ function aveo_custom_code_edit_snippet_page() {
             }
             $snippet_code = trim($snippet_code);
             $snippet_code = esc_textarea($snippet_code);
+            $snippet_github_sync = $snippet->github_synced;
 
             // query to get the id of all pages and posts
             $pages = $wpdb->get_results("SELECT ID, post_title FROM $wpdb->posts WHERE post_type = 'page' AND post_status = 'publish'");
@@ -193,6 +194,10 @@ function aveo_custom_code_edit_snippet_page() {
                                 <span class="slider round"></span>
                             </label>
                         </span>
+                    </div>
+                    <div>
+                        <label for="Snippet github sync">Synced with Github</label>
+                        ' . ($snippet_github_sync == 1 ? '<span class="dashicons dashicons-yes"></span>' : '<span class="dashicons dashicons-no"></span>') . '
                     </div>
                     <input type="submit" name="aveo_submit_snippet" value="Save Snippet" class="button button-primary">
                 </div>

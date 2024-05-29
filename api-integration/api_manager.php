@@ -53,7 +53,7 @@ function manage_snippet_api($snippet_name, $snippet_code, $document_type) {
 
     // Replace spaces with underscores in the snippet name
     $snippet_name = str_replace(' ', '_', $snippet_name);
-    
+
     // Example of calling the API function
     $api_url = 'http://acc-api.aveo21.dk/index.php';
 
@@ -71,4 +71,5 @@ function manage_snippet_api($snippet_name, $snippet_code, $document_type) {
     $response = callAPI('POST', $api_url, $data_array);
     return $response;
 }
+
 

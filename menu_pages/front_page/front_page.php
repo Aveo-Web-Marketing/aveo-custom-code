@@ -90,6 +90,7 @@ function aveo_custom_code_front_page() {
                 <td>' . $snippet_display_condition . '</td>
                 <td>' . $days_since_modified . '</td>
                 <td>' . $snippet->priority . '</td>
+                <td class="snippet_sync_td">' . ($snippet->github_synced == 1 ? '<span class="dashicons dashicons-yes"></span>' : '<span class="dashicons dashicons-no"></span> <span class="try_sync_btn" data-snippet_id="' . $snippet->id . '">Try sync</span>') . '</td>
             </tr>
         ';
     }
@@ -186,6 +187,7 @@ function aveo_custom_code_front_page() {
                         <th>Execution Condition</th>
                         <th>Modified</th>
                         <th>Priority</th>
+                        <th>GitHub Sync</th>
                     </tr>
                 </thead>
                 <tbody>

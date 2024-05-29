@@ -11,5 +11,6 @@ function acc_shortcode() {
 	
 	echo '</div>';
 	
+	// Git sync 4
 }
 add_shortcode('acc_shortcode', 'acc_shortcode');

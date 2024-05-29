@@ -161,6 +161,35 @@ async function snippet_clone(snippet_id) {
     });
 }
 
+// Event listener for syncing a snippet
+jQuery(function($) {
+    $(document).on('click', '.try_sync_btn', function() {
+        console.log('sync button clicked');
+        let id = $(this).data('snippet_id');
+        snippet_sync(id);
+    });
+});
+
+// Function to run on ajax call atempt - sync snippet
+async function snippet_sync(snippet_id) {
+    console.log("Sending sync request for snippet ID:", snippet_id);  // Debugging line
+    await jQuery.ajax({
+        url: '/wp-admin/admin-ajax.php',
+        type: 'POST',
+        data: { 
+            action: 'aveo_custom_code_sync_snippet', 
+            snippet_id: snippet_id 
+        },
+        success: function(response) {
+            jQuery('.snippet_sync_td').html('<span class="dashicons dashicons-yes"></span>');
+            console.log('Success sync:', response);  // More detailed log
+        },
+        error: function(xhr, status, error) {
+            console.log('Error:', status, error);  // More detailed error
+        }
+    });
+}
+
 // Event listener for the export of a snippet
 jQuery(function($) {
     $(document).on('click', '.export-snippet', function() {
@@ -328,6 +357,9 @@ jQuery(document).ready(function($) {
         }
     }
 });
+
+
+
 
 
 

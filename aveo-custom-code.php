@@ -39,6 +39,7 @@ function aveo_custom_code_install() {
             specific_page_condition JSON,
             modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             priority int(11) NOT NULL DEFAULT 10,
+            github_synced BOOLEAN NOT NULL DEFAULT FALSE,  -- Added this new column
             PRIMARY KEY  (id)
         ) {$charset_collate};";
 
@@ -236,8 +237,10 @@ function aveo_process_snippet_submission() {
             $specific_page_condition = (int) $_POST['selected_con_id'];
 
             // Check if snippet name already exists in the database (exclude current snippet if updating)
-            $query = $wpdb->prepare("SELECT id FROM {$wpdb->prefix}aveo_custom_code WHERE name = %s AND id != %d", $snippet_name, $snippet_id);
+            $normalized_snippet_name = str_replace(' ', '_', $snippet_name);
+            $query = $wpdb->prepare("SELECT id FROM {$wpdb->prefix}aveo_custom_code WHERE REPLACE(name, ' ', '_') = %s AND id != %d", $normalized_snippet_name, $snippet_id);
             $existing_id = $wpdb->get_var($query);
+
 
             // HERE THERE SHOULD BE A CONDITION TO CHECK IF THE SNIPPET IS BEING EDITED OR CREATED. IF EDITED, IT SHOULD NOT CHECK FOR EXISTING ID AND EXIT; BEUCAUSE THE SNIPPET NAME WILL BE THE SAME AS THE CURRENT SNIPPET NAME.
             if ($existing_id) {
@@ -320,10 +323,19 @@ function aveo_process_snippet_submission() {
                 'display_condition' => $display_condition,
                 'modified' => $modified,
                 'priority' => $priority,
-                'specific_page_condition' => $specific_page_condition
+                'specific_page_condition' => $specific_page_condition,
+                'github_synced' => '0'
             ];
 
             $data['file'] = $new_file_path;
+
+            // include api_manager.php file
+            require_once plugin_dir_path(__FILE__) . 'api-integration/api_manager.php';
+            $response = manage_snippet_api($snippet_name, $snippet_code, $document_type);
+
+            if ($response == '1') {
+                $data['github_synced'] = true;
+            }
 
             if ($snippet_id > 0) {
                 // Update existing snippet
@@ -333,11 +345,6 @@ function aveo_process_snippet_submission() {
                 $wpdb->insert("{$wpdb->prefix}aveo_custom_code", $data);
                 $snippet_id = $wpdb->insert_id;
             }
-
-            // include api_manager.php file
-
-            require_once plugin_dir_path(__FILE__) . 'api-integration/api_manager.php';
-            manage_snippet_api($snippet_name, $snippet_code, $document_type);
 
             set_transient('aveo_snippet_success_message', 'Snippet successfully saved and activated.', 30); // 30 seconds expiration
 
