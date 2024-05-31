@@ -273,18 +273,36 @@ input:checked + label .slider:before {
 }
 
 .loader {
+    display: block;
     border: 5px solid #f3f3f3; /* Light grey */
     border-top: 5px solid #3498db; /* Blue */
     border-radius: 50%;
-    width: 20px;
-    height: 20px;
+    width: 10px;
+    height: 10px;
     animation: spin 1s linear infinite;
+    margin: auto;
 }
 
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+.try_sync_btn {
+    color: #2271B1;
+    cursor: pointer;
+}
+
+.dashicons-yes {
+    color: #22B14C;
+}
+
+.dashicons-no {
+    color: #B1222a;
+}
+
+
+
 
 
 

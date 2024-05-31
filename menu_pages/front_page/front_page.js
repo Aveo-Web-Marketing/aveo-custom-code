@@ -164,18 +164,19 @@ async function snippet_clone(snippet_id) {
 // Event listener for syncing a snippet
 jQuery(function($) {
     $(document).on('click', '.try_sync_btn', function() {
-        console.log('sync button clicked');
-        let id = $(this).data('snippet_id');
-        snippet_sync(id);
+        let button = $(this);
+        let id = button.data('snippet_id');
+        let container = button.closest('.snippet_sync_td');
+
+        // Show loading spinner and hide any success icon initially
+        container.html('<span class="loader"></span>')
+
+        // Perform AJAX sync operation
+        snippet_sync(id, container);
     });
 });
 
-// Function to run on ajax call atempt - sync snippet
-async function snippet_sync(snippet_id) {
-
-    jQuery('.loader').show(); // Show the spinner when the request starts
-    jQuery('.dashicons-yes').hide(); // Ensure the check icon is hidden during loading
-    
+async function snippet_sync(snippet_id, container) {
     await jQuery.ajax({
         url: '/wp-admin/admin-ajax.php',
         type: 'POST',
@@ -184,17 +185,20 @@ async function snippet_sync(snippet_id) {
             snippet_id: snippet_id 
         },
         success: function(response) {
+            // Hide the loader regardless of the outcome
+            container.find('.loader').hide();
 
-            jQuery('.loader').hide();
-
-            if (response.data === '1') {
-                jQuery('.snippet_sync_td').html('<span class="dashicons dashicons-yes"></span>');
+            // Check if the response was successful and update UI accordingly
+            if (response.data == '1') {
+                container.html('<span class="dashicons dashicons-yes"></span>');
+            } else {
+                container.html('<span class="dashicons dashicons-no"></span><span class="try_sync_btn" data-snippet_id="' + snippet_id + '">Try sync</span>');
             }
-
-            console.log('Success sync:', response);  // More detailed log
+            console.log('Success sync:', response);
         },
-        error: function(status, error) {
-            console.log('Error:', status, error);  // More detailed error
+        error: function(xhr, status, error) {
+            container.find('.loader').hide();
+            console.log('Error:', status, error);
         }
     });
 }
