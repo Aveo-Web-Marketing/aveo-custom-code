@@ -172,7 +172,10 @@ jQuery(function($) {
 
 // Function to run on ajax call atempt - sync snippet
 async function snippet_sync(snippet_id) {
-    console.log("Sending sync request for snippet ID:", snippet_id);  // Debugging line
+
+    jQuery('.loader').show(); // Show the spinner when the request starts
+    jQuery('.dashicons-yes').hide(); // Ensure the check icon is hidden during loading
+    
     await jQuery.ajax({
         url: '/wp-admin/admin-ajax.php',
         type: 'POST',
@@ -181,10 +184,16 @@ async function snippet_sync(snippet_id) {
             snippet_id: snippet_id 
         },
         success: function(response) {
-            jQuery('.snippet_sync_td').html('<span class="dashicons dashicons-yes"></span>');
+
+            jQuery('.loader').hide();
+
+            if (response.data === '1') {
+                jQuery('.snippet_sync_td').html('<span class="dashicons dashicons-yes"></span>');
+            }
+
             console.log('Success sync:', response);  // More detailed log
         },
-        error: function(xhr, status, error) {
+        error: function(status, error) {
             console.log('Error:', status, error);  // More detailed error
         }
     });

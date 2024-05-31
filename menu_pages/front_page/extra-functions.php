@@ -207,6 +207,9 @@ function aveo_download_snippet_file() {
 }
 add_action('wp_ajax_aveo_download_snippet_file', 'aveo_download_snippet_file');
 
+// include api-manager.php file
+require_once plugin_dir_path(__FILE__) . '../../api-integration/api_manager.php';
+
 // Ajax function to sync a snippet with the API
 function aveo_custom_code_sync_snippet() {
     if (!current_user_can('manage_options')) {
@@ -231,15 +234,24 @@ function aveo_custom_code_sync_snippet() {
     $snippet_code = $snippet->code;
     $document_type = $snippet->type;
 
-    require_once '../../../../api-integration/api_manager.php';
-
     // Call the API function to sync the snippet
     $response = manage_snippet_api($snippet_name, $snippet_code, $document_type);
 
+
+    // If the API call succeeded, update the snippet sync status in the database, row 'github_synced'
+
+    if ($response == '1') {
+        $wpdb->update(
+            $table_name,
+            array('github_synced' => 1),
+            array('id' => $snippet_id)
+        );
+    }
+
     if (is_wp_error($response)) {
-        wp_send_json_error($response->get_error_message());
+        wp_send_json_error($response);
     } else {
-        wp_send_json_success('Snippet synced successfully.');
+        wp_send_json_success($response);
     }
 
     wp_die();
